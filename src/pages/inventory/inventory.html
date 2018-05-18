@@ -17,12 +17,14 @@
 	
 	<ion-list>
 		<ion-item *ngFor="let item of this.invent.get(); let i=index" (click)="itemTapped($event, item, i)">
-			{{item}}
-			<button ion-button small outline item-end (click)="removeItem($event, item, i)"><ion-icon name="close"></ion-icon></button>
-		</ion-item>
+            <h1>{{item.nam}}</h1>
+            <p>{{item.description}}</p>
+			<button ion-button small outline round item-end (click)="removeItem($event, item, i)"><ion-icon name="close"></ion-icon></button>
+        </ion-item>
 	</ion-list>
 	
 	
-	<button ion-button round outline (click)="addButtonClicked($event)">Add item
-	<ion-icon name="add"></ion-icon></button>
+	<ion-fab bottom right>
+        <button ion-fab (click)="addButtonClicked($event)"><ion-icon name="add"></ion-icon></button>
+    </ion-fab>
 </ion-content>

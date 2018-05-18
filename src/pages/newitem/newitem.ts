@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, App } from 'ionic-angular';
 import { DataProvider } from '../../providers/data/data';
-import { InventProvider } from '../../providers/invent/invent';
+import { InventProvider, Category } from '../../providers/invent/invent';
 
 /**
  * Generated class for the NewitemPage page.
@@ -18,6 +18,7 @@ import { InventProvider } from '../../providers/invent/invent';
 export class NewitemPage {
 
     nam: string;
+    desc: string;
     
   constructor(public navCtrl: NavController, public navParams: NavParams, public data: DataProvider, public invent: InventProvider, public app: App) {
       
@@ -26,7 +27,8 @@ export class NewitemPage {
     
     createItemClicked()
     {
-        this.invent.push(this.nam);
+        let cat = new Category(this.nam, this.desc)
+        this.invent.push( cat );
         this.data.save(this.invent.get());
         this.app.getRootNav().pop();
     }
