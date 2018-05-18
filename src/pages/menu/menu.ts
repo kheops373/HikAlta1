@@ -1,5 +1,7 @@
 import { Tab2Page } from './../tab2/tab2';
 import { Tab1Page } from './../tab1/tab1';
+import { InventoryPage } from './../inventory/inventory';
+import { HomePage } from './../home/home';
 import { TabsPage } from './../tabs/tabs';
 import { SpecialPage } from './../special/special';
 import { Component, ViewChild } from '@angular/core';
@@ -28,8 +30,8 @@ export class MenuPage {
 
 
     pages : PageInterface[] = [
-        { title: 'Tab 1', pageName: 'TabsPage', tabComponent: 'Tab1Page', index: 0, icon: 'home'},
-        { title: 'Tab 2', pageName: 'TabsPage', tabComponent: 'Tab2Page', index: 1, icon: 'contact'},
+        { title: 'Inventory', pageName: 'TabsPage', tabComponent: 'InventoryPage', index: 0, icon: 'cube'},
+        { title: 'Backpack', pageName: 'TabsPage', tabComponent: 'Tab2Page', index: 1, icon: 'bonfire'},
         { title: 'Special', pageName: 'SpecialPage', icon: 'shuffle'}
         
     ]
