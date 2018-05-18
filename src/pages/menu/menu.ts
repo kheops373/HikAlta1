@@ -1,7 +1,5 @@
 import { Tab2Page } from './../tab2/tab2';
-import { Tab1Page } from './../tab1/tab1';
 import { InventoryPage } from './../inventory/inventory';
-import { HomePage } from './../home/home';
 import { TabsPage } from './../tabs/tabs';
 import { SpecialPage } from './../special/special';
 import { Component, ViewChild } from '@angular/core';

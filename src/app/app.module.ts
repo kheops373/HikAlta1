@@ -27,8 +27,9 @@ import { InventProvider } from '../providers/invent/invent';
     StatusBar,
     SplashScreen,
     DataProvider,
+    InventProvider,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    InventProvider
+
   ]
 })
 export class AppModule {}

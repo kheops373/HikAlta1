@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { DataProvider } from '../../providers/data/data';
+import { InventProvider } from '../../providers/invent/invent';
 
 /**
  * Generated class for the InventoryPage page.
@@ -20,7 +21,7 @@ items : string[] = [];
 	
 	public newItem : string;
 
-  constructor(public navCtrl: NavController, public dataService: DataProvider ) {
+  constructor(public navCtrl: NavController, public dataService: DataProvider, public invent: InventProvider ) {
   
 	this.dataService.getData().then((storedItems) => {
 		if( storedItems){
@@ -50,5 +51,10 @@ items : string[] = [];
 		this.dataService.save(this.items);
 	}
 
+
+    pushToCont(event)
+    {
+        this.invent.clone(this.items);
+    }
 
 }

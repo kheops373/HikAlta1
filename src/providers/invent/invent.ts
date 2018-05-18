@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 /*
@@ -10,8 +9,24 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class InventProvider {
 
-  constructor(public http: HttpClient) {
-    console.log('Hello InventProvider Provider');
+    categories : string[] = [ '1' ];
+
+  constructor() {  }
+  
+  
+  push(element)
+  {
+    this.categories.push(element);
+  }
+  
+  clone(arra)
+  {
+    this.categories = arra.slice();
+  }
+  
+  get()
+  {
+    return this.categories;
   }
 
 }
