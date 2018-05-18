@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, App } from 'ionic-angular';
 import { DataProvider } from '../../providers/data/data';
 import { InventProvider } from '../../providers/invent/invent';
+
+import { NewitemPage } from '../../pages/newitem/newitem';
 
 /**
  * Generated class for the InventoryPage page.
@@ -16,45 +18,35 @@ import { InventProvider } from '../../providers/invent/invent';
   templateUrl: 'inventory.html',
 })
 export class InventoryPage {
-
-items : string[] = [];
 	
 	public newItem : string;
 
-  constructor(public navCtrl: NavController, public dataService: DataProvider, public invent: InventProvider ) {
-  
-	this.dataService.getData().then((storedItems) => {
-		if( storedItems){
-			this.items = storedItems;
-		}
-	});
 
-  }
+    constructor(public app: App, public navCtrl: NavController, public viewCtrl: ViewController, public dataService: DataProvider, public invent: InventProvider ) {
+        
+        this.dataService.getData().then((storedItems) => {
+            if( storedItems){
+                this.invent.clone(storedItems);
+            }
+        });
+    }
   
   
   
 	addButtonClicked(event)
 	{
-		if(this.newItem.length > 2)
-		{
-			this.items.push(this.newItem);
-			this.dataService.save(this.items);
-			this.newItem = '';
-		}
-		else
-			alert('Not long enough');
+        this.app.getRootNav().push('NewitemPage');
 	}
   
-	itemTapped(event, item)
+	itemTapped(event, item, i)
 	{
-		this.items.pop();
-		this.dataService.save(this.items);
+
 	}
-
-
-    pushToCont(event)
-    {
-        this.invent.clone(this.items);
-    }
+	removeItem(event, item, i)
+	{
+		//this.invent.pop();
+		this.invent.remove(i);
+		this.dataService.save(this.invent.get());
+	}
 
 }

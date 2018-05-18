@@ -10,6 +10,7 @@ import { LoginPage } from './../pages/login/login';
 import { DataProvider } from '../providers/data/data';
 import { InventProvider } from '../providers/invent/invent';
 
+
 @NgModule({
   declarations: [
     MyApp

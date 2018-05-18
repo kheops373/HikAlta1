@@ -9,7 +9,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class InventProvider {
 
-    categories : string[] = [ '1' ];
+    categories : string[] = ['1'];
 
   constructor() {  }
   
@@ -17,6 +17,16 @@ export class InventProvider {
   push(element)
   {
     this.categories.push(element);
+  }
+  
+  pop()
+  {
+    this.categories.pop();
+  }
+  
+  remove(i)
+  {
+  	this.categories.splice(i,1);
   }
   
   clone(arra)

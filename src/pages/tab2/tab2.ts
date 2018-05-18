@@ -22,8 +22,7 @@ export class Tab2Page {
             this.items = this.invent.get();
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad Tab2Page');
+  ionViewWillEnter() {
       this.items = this.invent.get();
   }
 
