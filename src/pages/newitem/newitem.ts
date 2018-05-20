@@ -17,7 +17,7 @@ import { InventProvider, Category } from '../../providers/invent/invent';
 })
 export class NewitemPage {
 
-    nam: string;
+    name: string;
     desc: string;
     
   constructor(public navCtrl: NavController, public navParams: NavParams, public data: DataProvider, public invent: InventProvider, public app: App) {
@@ -27,9 +27,7 @@ export class NewitemPage {
     
     createItemClicked()
     {
-        let cat = new Category(this.nam, this.desc)
-        this.invent.push( cat );
-        this.data.save(this.invent.get());
+        this.invent.createItem( this.name, this.desc, "Main Category" );
         this.app.getRootNav().pop();
     }
 

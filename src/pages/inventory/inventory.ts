@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, App } from 'ionic-angular';
-import { DataProvider } from '../../providers/data/data';
+import { IonicPage, NavController, NavParams, ViewController, App, ModalController } from 'ionic-angular';
 import { InventProvider } from '../../providers/invent/invent';
 
 import { NewitemPage } from '../../pages/newitem/newitem';
+import { SelectinventPage } from '../../pages/selectinvent/selectinvent';
 
 /**
  * Generated class for the InventoryPage page.
@@ -22,13 +22,13 @@ export class InventoryPage {
 	public newItem : string;
 
 
-    constructor(public app: App, public navCtrl: NavController, public viewCtrl: ViewController, public dataService: DataProvider, public invent: InventProvider ) {
+    constructor(public app: App, public navCtrl: NavController, public modalCtrl: ModalController, public viewCtrl: ViewController, public invent: InventProvider ) {
         
-        this.dataService.getData().then((storedItems) => {
+        /*this.dataService.getData().then((storedItems) => {
             if( storedItems){
                 this.invent.clone(storedItems);
             }
-        });
+        });*/
     }
   
   
@@ -42,11 +42,18 @@ export class InventoryPage {
 	{
 
 	}
-	removeItem(event, item, i)
+	removeItem(event, itemId)
 	{
 		//this.invent.pop();
-		this.invent.remove(i);
-		this.dataService.save(this.invent.get());
+		this.invent.removeItem(itemId);
+		//this.dataService.save(this.invent.get());
+        this.invent.saveAll();
 	}
+
+
+    selectInventory() {
+        let selectInv = this.modalCtrl.create('SelectinventPage', { currentInvent: "curr"} );
+        selectInv.present();
+    }
 
 }

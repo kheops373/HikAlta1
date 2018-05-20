@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { InventProvider } from '../../providers/invent/invent';
+import { InventProvider, Category } from '../../providers/invent/invent';
 
 /**
  * Generated class for the Tab2Page page.
@@ -16,14 +16,14 @@ import { InventProvider } from '../../providers/invent/invent';
 })
 export class Tab2Page {
     
-    items : string[] = [];
+    items : Category[] = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public invent: InventProvider ) {
-            this.items = this.invent.get();
+        this.items = this.invent.getItems(this.invent.settings.selectedInventory);
   }
 
   ionViewWillEnter() {
-      this.items = this.invent.get();
+      this.items = this.invent.getItems(this.invent.settings.selectedInventory);
   }
 
 }
