@@ -39,7 +39,7 @@ export class NewitemPage {
           this.item = navParams.get('item');
           this.category = navParams.get('category');
           this.titleText = 'Edit item';
-          this.actionButtonText = 'Save changes';
+          this.actionButtonText = 'Save';
       }
       
   }
