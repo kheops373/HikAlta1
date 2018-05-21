@@ -27,7 +27,7 @@ var InventoryPageModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_2__inventory__["a" /* InventoryPage */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__inventory__["a" /* InventoryPage */]),
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__inventory__["a" /* InventoryPage */]),
             ],
         })
     ], InventoryPageModule);
@@ -65,28 +65,42 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Ionic pages and navigation.
  */
 var InventoryPage = /** @class */ (function () {
-    function InventoryPage(app, navCtrl, modalCtrl, viewCtrl, invent) {
+    function InventoryPage(app, navCtrl, modalCtrl, viewCtrl, invent, alertCtrl) {
         this.app = app;
         this.navCtrl = navCtrl;
         this.modalCtrl = modalCtrl;
         this.viewCtrl = viewCtrl;
         this.invent = invent;
-        /*this.dataService.getData().then((storedItems) => {
-            if( storedItems){
-                this.invent.clone(storedItems);
-            }
-        });*/
+        this.alertCtrl = alertCtrl;
     }
-    InventoryPage.prototype.addButtonClicked = function (event) {
-        this.app.getRootNav().push('NewitemPage');
+    InventoryPage.prototype.newItemToCategory = function (category) {
+        this.app.getRootNav().push('NewitemPage', { 'operation': 'create', 'category': category });
     };
-    InventoryPage.prototype.itemTapped = function (event, item, i) {
+    InventoryPage.prototype.itemTapped = function (item, category) {
+        this.app.getRootNav().push('NewitemPage', { 'operation': 'edit', 'item': item, 'category': category });
     };
-    InventoryPage.prototype.removeItem = function (event, itemId) {
-        //this.invent.pop();
-        this.invent.removeItem(itemId);
-        //this.dataService.save(this.invent.get());
-        this.invent.saveAll();
+    InventoryPage.prototype.removeItem = function (event, item) {
+        var _this = this;
+        var al = this.alertCtrl.create({
+            title: 'Remove item',
+            message: 'Are you sure you want to remove the item ' + item.name + '?',
+            buttons: [
+                {
+                    text: 'Cancel',
+                    role: 'cancel',
+                    handler: function () {
+                        console.log('Cancel clicked');
+                    }
+                },
+                {
+                    text: 'Confirm',
+                    handler: function () {
+                        _this.invent.removeItemById(item.id);
+                    }
+                }
+            ]
+        });
+        al.present();
     };
     InventoryPage.prototype.selectInventory = function () {
         var selectInv = this.modalCtrl.create('SelectinventPage', { currentInvent: "curr" });
@@ -94,9 +108,9 @@ var InventoryPage = /** @class */ (function () {
     };
     InventoryPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-inventory',template:/*ion-inline-start:"C:\Users\anton\Documents\Dev\HikAlfa1\src\pages\inventory\inventory.html"*/'<ion-header>\n\n\n\n  <ion-navbar>\n\n    <ion-buttons start>\n\n      <button ion-button menuToggle>\n\n         <ion-icon name="menu"></ion-icon>\n\n      </button>\n\n    </ion-buttons>\n\n    <ion-title>Inventory: {{this.invent.settings.selectedInventory}}</ion-title>\n\n    <ion-buttons end>\n\n        <button ion-button (click)="selectInventory()">\n\n            <ion-icon name="book"></ion-icon>\n\n        </button>\n\n    </ion-buttons>\n\n  </ion-navbar>\n\n\n\n</ion-header>\n\n\n\n\n\n<ion-content padding>\n\n\n\n    <ion-card *ngFor="let cat of this.invent.getCategories()">\n\n	\n\n        <h2 style="font-weight: bold; font-size: 15pt; text-align: center">{{cat.name}}</h2>\n\n	<ion-list>\n\n		<ion-item *ngFor="let item of this.invent.getItems(cat); let i=index" (click)="itemTapped($event, item, i)">\n\n            <h2 style="color:green; font-weight:bold;">{{item.name}}</h2>\n\n            <p>{{item.description}} - {{item.id}} - {{this.invent.settings.lastItemId}}</p>\n\n			<button ion-button small outline round item-end (click)="removeItem($event, item.id)"><ion-icon name="close"></ion-icon></button>\n\n        </ion-item>\n\n	</ion-list>\n\n	\n\n    </ion-card>\n\n	\n\n	<ion-fab bottom right>\n\n        <button ion-fab (click)="addButtonClicked($event)"><ion-icon name="add"></ion-icon></button>\n\n    </ion-fab>\n\n</ion-content>'/*ion-inline-end:"C:\Users\anton\Documents\Dev\HikAlfa1\src\pages\inventory\inventory.html"*/,
+            selector: 'page-inventory',template:/*ion-inline-start:"C:\Users\anton\Documents\Dev\HikAlfa1\src\pages\inventory\inventory.html"*/'<ion-header>\n\n\n\n  <ion-navbar>\n\n    <ion-title>Inventory: {{this.invent.settings.selectedInventory}}</ion-title>\n\n    <ion-buttons end>\n\n        <button ion-button (click)="selectInventory()">\n\n            <ion-icon name="book"></ion-icon>\n\n        </button>\n\n    </ion-buttons>\n\n  </ion-navbar>\n\n\n\n</ion-header>\n\n\n\n\n\n<ion-content padding>\n\n	\n\n    <ion-list *ngFor="let cat of this.invent.getCategories()">\n\n	\n\n        <ion-item-divider style="font-weight: bold; font-size: 13pt; ">{{cat.name}}\n\n            <button ion-button item-end small round outline (click)="newItemToCategory(cat)"><ion-icon name="add"></ion-icon></button>\n\n        </ion-item-divider>\n\n        \n\n\n\n        <ion-item *ngFor="let item of this.invent.getItems(cat); let i=index">\n\n                <h2 style="color:green; font-weight:bold;" (click)="itemTapped(item, cat)">{{item.name}}</h2>\n\n                <p>{{item.description}} - {{item.weight}}gr ({{item.id}})</p>\n\n            <button ion-button round outline item-end (click)="removeItem($event, item)"><ion-icon name="backspace"></ion-icon></button>\n\n        </ion-item>\n\n    </ion-list>\n\n	\n\n\n\n	\n\n	<!--<ion-fab bottom right>\n\n        <button ion-fab (click)="addButtonClicked($event)"><ion-icon name="add"></ion-icon></button>\n\n    </ion-fab>-->\n\n</ion-content>'/*ion-inline-end:"C:\Users\anton\Documents\Dev\HikAlfa1\src\pages\inventory\inventory.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* App */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* ModalController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* ViewController */], __WEBPACK_IMPORTED_MODULE_2__providers_invent_invent__["a" /* InventProvider */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* App */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* ModalController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* ViewController */], __WEBPACK_IMPORTED_MODULE_2__providers_invent_invent__["a" /* InventProvider */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]])
     ], InventoryPage);
     return InventoryPage;
 }());

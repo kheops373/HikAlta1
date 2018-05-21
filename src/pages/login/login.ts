@@ -23,7 +23,7 @@ export class LoginPage {
   }
   
   doLogin() {
-    this.navCtrl.setRoot('MenuPage');
+    this.navCtrl.setRoot('TabsPage');
   }
 
 }

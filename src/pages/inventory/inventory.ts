@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, App, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, App, ModalController, AlertController } from 'ionic-angular';
 import { InventProvider } from '../../providers/invent/invent';
 
 import { NewitemPage } from '../../pages/newitem/newitem';
@@ -22,32 +22,44 @@ export class InventoryPage {
 	public newItem : string;
 
 
-    constructor(public app: App, public navCtrl: NavController, public modalCtrl: ModalController, public viewCtrl: ViewController, public invent: InventProvider ) {
+    constructor(public app: App, public navCtrl: NavController, public modalCtrl: ModalController, public viewCtrl: ViewController, public invent: InventProvider, public alertCtrl: AlertController ) {
         
-        /*this.dataService.getData().then((storedItems) => {
-            if( storedItems){
-                this.invent.clone(storedItems);
-            }
-        });*/
     }
   
   
   
-	addButtonClicked(event)
-	{
-        this.app.getRootNav().push('NewitemPage');
-	}
+    newItemToCategory(category) {
+        this.app.getRootNav().push('NewitemPage', { 'operation': 'create', 'category': category });
+    }
   
-	itemTapped(event, item, i)
-	{
-
+	itemTapped(item, category) {
+        this.app.getRootNav().push('NewitemPage', { 'operation': 'edit', 'item': item, 'category': category } )
 	}
-	removeItem(event, itemId)
+	removeItem(event, item)
 	{
-		//this.invent.pop();
-		this.invent.removeItem(itemId);
-		//this.dataService.save(this.invent.get());
-        this.invent.saveAll();
+        let al = this.alertCtrl.create({
+            title: 'Remove item',
+            message: 'Are you sure you want to remove the item '+item.name+'?',
+            buttons: [
+              {
+                text: 'Cancel',
+                role: 'cancel',
+                handler: () => {
+                  console.log('Cancel clicked');
+                }
+              },
+              {
+                text: 'Confirm',
+                handler: () => {
+                    this.invent.removeItemById(item.id);
+                }
+              }
+            ]
+          });
+        al.present();
+
+		
+
 	}
 
 

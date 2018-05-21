@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, App } from 'ionic-angular';
 import { DataProvider } from '../../providers/data/data';
-import { InventProvider, Category } from '../../providers/invent/invent';
+import { InventProvider, Category, InventoryItem } from '../../providers/invent/invent';
 
 /**
  * Generated class for the NewitemPage page.
@@ -17,17 +17,42 @@ import { InventProvider, Category } from '../../providers/invent/invent';
 })
 export class NewitemPage {
 
-    name: string;
-    desc: string;
+    operation: string;
+    category: Category;
+    item: InventoryItem;
+    titleText: string;
+    actionButtonText: string;
     
   constructor(public navCtrl: NavController, public navParams: NavParams, public data: DataProvider, public invent: InventProvider, public app: App) {
+  
+      this.operation = navParams.get('operation');
+      //alert(navParams.get('category'));
+      
+      if( this.operation == 'create' ) {
+          this.category = navParams.get('category');
+          this.item = new InventoryItem('','','',0);
+          this.item.category = this.category.id;
+          this.titleText = 'Create new item';
+          this.actionButtonText = 'Create';
+          
+      } else if( this.operation == 'edit' ) {
+          this.item = navParams.get('item');
+          this.category = navParams.get('category');
+          this.titleText = 'Edit item';
+          this.actionButtonText = 'Save changes';
+      }
       
   }
 
     
-    createItemClicked()
-    {
-        this.invent.createItem( this.name, this.desc, "Main Category" );
+    actionButtonClicked() {
+        if( this.operation == 'create' ) {
+            //this.invent.createItem( this.item.name, this.item.description, this.category.id);
+            this.invent.createItemByItem(this.item);
+        } else if( this.operation == 'edit' ) {
+            this.invent.saveItems();
+        }
+        // ADJUST CATEGORY !!!
         this.app.getRootNav().pop();
     }
 

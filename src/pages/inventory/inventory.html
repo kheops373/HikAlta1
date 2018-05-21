@@ -1,11 +1,6 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-buttons start>
-      <button ion-button menuToggle>
-         <ion-icon name="menu"></ion-icon>
-      </button>
-    </ion-buttons>
     <ion-title>Inventory: {{this.invent.settings.selectedInventory}}</ion-title>
     <ion-buttons end>
         <button ion-button (click)="selectInventory()">
@@ -18,21 +13,24 @@
 
 
 <ion-content padding>
+	
+    <ion-list *ngFor="let cat of this.invent.getCategories()">
+	
+        <ion-item-divider style="font-weight: bold; font-size: 13pt; ">{{cat.name}}
+            <button ion-button item-end small round outline (click)="newItemToCategory(cat)"><ion-icon name="add"></ion-icon></button>
+        </ion-item-divider>
+        
 
-    <ion-card *ngFor="let cat of this.invent.getCategories()">
-	
-        <h2 style="font-weight: bold; font-size: 15pt; text-align: center">{{cat.name}}</h2>
-	<ion-list>
-		<ion-item *ngFor="let item of this.invent.getItems(cat); let i=index" (click)="itemTapped($event, item, i)">
-            <h2 style="color:green; font-weight:bold;">{{item.name}}</h2>
-            <p>{{item.description}} - {{item.id}} - {{this.invent.settings.lastItemId}}</p>
-			<button ion-button small outline round item-end (click)="removeItem($event, item.id)"><ion-icon name="close"></ion-icon></button>
+        <ion-item *ngFor="let item of this.invent.getItems(cat); let i=index">
+                <h2 style="color:green; font-weight:bold;" (click)="itemTapped(item, cat)">{{item.name}}</h2>
+                <p>{{item.description}} - {{item.weight}}gr ({{item.id}})</p>
+            <button ion-button round outline item-end (click)="removeItem($event, item)"><ion-icon name="backspace"></ion-icon></button>
         </ion-item>
-	</ion-list>
+    </ion-list>
 	
-    </ion-card>
+
 	
-	<ion-fab bottom right>
+	<!--<ion-fab bottom right>
         <button ion-fab (click)="addButtonClicked($event)"><ion-icon name="add"></ion-icon></button>
-    </ion-fab>
+    </ion-fab>-->
 </ion-content>

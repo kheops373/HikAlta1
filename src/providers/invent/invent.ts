@@ -26,13 +26,14 @@ export class InventoryItem {
 
     public id: number;
     public inventory: string;
-    public category: string;
+    public category: number;
     public name: string;
     public description: string;
     public brand: string;
     public model: string;
     public weight: number;
     public quantity: number;
+    public type: string;
 
     constructor(id, name, inventory, category) {
         this.id = id;
@@ -62,7 +63,11 @@ export class InventProvider {
 
     inventories : string[] = ["Main", "Home"];
     settings : Settings = new Settings();
-    categories : Category[] = [ {'id':0, 'name':'Main Category', 'description':'...'} ];
+    categories : Category[] = [ {'id':0, 'name':'Clothes', 'description':'...'},
+                                {'id':1, 'name':'Shelter', 'description':'...'},
+                                {'id':2, 'name':'Sleeping system', 'description':'...'},
+                                {'id':3, 'name':'Cookware', 'description':'...'},
+                                {'id':4, 'name':'Tools', 'description':'...'} ];
     items : InventoryItem[] = [];
 
     
@@ -103,6 +108,10 @@ export class InventProvider {
         this.storage.set('settings', this.settings);
     }
 
+    saveItems() {
+        this.storage.set('items', this.items);
+    }
+
 
 
     getInventories() {
@@ -129,9 +138,21 @@ export class InventProvider {
         this.categories.push(cat);
     }
 
-    deleteCategory(id) {
-        
+    getCategoryNameById(catId) {
+        for(var i = this.categories.length - 1; i >= 0; i--) {
+            if(this.categories[i].id == catId) {
+               return this.categories[i].name;
+            }
+        }
     }
+    getCategoryById(catId) {
+        for(var i = this.categories.length - 1; i >= 0; i--) {
+            if(this.categories[i].id == catId) {
+               return this.categories[i];
+            }
+        }
+    }
+
 
 
 
@@ -139,7 +160,7 @@ export class InventProvider {
         let res : InventoryItem[] = [];
         
         this.items.forEach( function(element) {
-            if( element.inventory == this.settings.selectedInventory && element.category == category.name ) {
+            if( element.inventory == this.settings.selectedInventory && element.category == category.id ) {
                 res.push(element);
                 //alert("Match found");
             }
@@ -150,7 +171,7 @@ export class InventProvider {
         
         return res;
     }
-    removeItem(itemId) {
+    removeItemById(itemId) {
         for(var i = this.items.length - 1; i >= 0; i--) {
             if(this.items[i].id == itemId) {
                this.items.splice(i, 1);
@@ -166,6 +187,14 @@ export class InventProvider {
         this.storage.set('items', this.items);
         this.storage.set('settings', this.settings);
     }
+    createItemByItem(item) {
+        item.id = this.settings.lastItemId;
+        item.inventory = this.settings.selectedInventory;
+        this.settings.lastItemId++;
+        this.items.push(item);
+        this.storage.set('items', this.items);
+        this.storage.set('settings', this.settings);
+    }
   
   
     
@@ -175,6 +204,13 @@ export class InventProvider {
         this.categories.splice(i,1);
     }
 
+
+    eraseAllStorage() {
+        this.items = [];
+        this.settings = new Settings();
+        this.storage.set('items', this.items);
+        this.storage.set('settings', this.settings);
+    }
 
 
 }

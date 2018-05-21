@@ -29,11 +29,11 @@ var map = {
 		275,
 		6
 	],
-	"../pages/menu/menu.module": [
+	"../pages/newitem/newitem.module": [
 		276,
 		5
 	],
-	"../pages/newitem/newitem.module": [
+	"../pages/newmenu/newmenu.module": [
 		277,
 		4
 	],
@@ -42,11 +42,11 @@ var map = {
 		3
 	],
 	"../pages/special/special.module": [
-		280,
+		279,
 		2
 	],
 	"../pages/tab2/tab2.module": [
-		279,
+		280,
 		1
 	],
 	"../pages/tabs/tabs.module": [
@@ -75,7 +75,7 @@ module.exports = webpackAsyncContext;
 
 "use strict";
 /* unused harmony export Category */
-/* unused harmony export InventoryItem */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return InventoryItem; });
 /* unused harmony export Settings */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InventProvider; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
@@ -136,7 +136,11 @@ var InventProvider = /** @class */ (function () {
         this.storage = storage;
         this.inventories = ["Main", "Home"];
         this.settings = new Settings();
-        this.categories = [{ 'id': 0, 'name': 'Main Category', 'description': '...' }];
+        this.categories = [{ 'id': 0, 'name': 'Clothes', 'description': '...' },
+            { 'id': 1, 'name': 'Shelter', 'description': '...' },
+            { 'id': 2, 'name': 'Sleeping system', 'description': '...' },
+            { 'id': 3, 'name': 'Cookware', 'description': '...' },
+            { 'id': 4, 'name': 'Tools', 'description': '...' }];
         this.items = [];
         storage.get('settings').then(function (storedItems) {
             if (storedItems) {
@@ -169,6 +173,9 @@ var InventProvider = /** @class */ (function () {
         this.storage.set('inventories', this.inventories);
         this.storage.set('settings', this.settings);
     };
+    InventProvider.prototype.saveItems = function () {
+        this.storage.set('items', this.items);
+    };
     InventProvider.prototype.getInventories = function () {
         return this.inventories;
     };
@@ -188,12 +195,24 @@ var InventProvider = /** @class */ (function () {
         this.settings.lastCatId++;
         this.categories.push(cat);
     };
-    InventProvider.prototype.deleteCategory = function (id) {
+    InventProvider.prototype.getCategoryNameById = function (catId) {
+        for (var i = this.categories.length - 1; i >= 0; i--) {
+            if (this.categories[i].id == catId) {
+                return this.categories[i].name;
+            }
+        }
+    };
+    InventProvider.prototype.getCategoryById = function (catId) {
+        for (var i = this.categories.length - 1; i >= 0; i--) {
+            if (this.categories[i].id == catId) {
+                return this.categories[i];
+            }
+        }
     };
     InventProvider.prototype.getItems = function (category) {
         var res = [];
         this.items.forEach(function (element) {
-            if (element.inventory == this.settings.selectedInventory && element.category == category.name) {
+            if (element.inventory == this.settings.selectedInventory && element.category == category.id) {
                 res.push(element);
                 //alert("Match found");
             }
@@ -202,7 +221,7 @@ var InventProvider = /** @class */ (function () {
         //alert("Selected: "+this.settings.selectedInventory+ " cat: "+category.name);
         return res;
     };
-    InventProvider.prototype.removeItem = function (itemId) {
+    InventProvider.prototype.removeItemById = function (itemId) {
         for (var i = this.items.length - 1; i >= 0; i--) {
             if (this.items[i].id == itemId) {
                 this.items.splice(i, 1);
@@ -218,8 +237,22 @@ var InventProvider = /** @class */ (function () {
         this.storage.set('items', this.items);
         this.storage.set('settings', this.settings);
     };
+    InventProvider.prototype.createItemByItem = function (item) {
+        item.id = this.settings.lastItemId;
+        item.inventory = this.settings.selectedInventory;
+        this.settings.lastItemId++;
+        this.items.push(item);
+        this.storage.set('items', this.items);
+        this.storage.set('settings', this.settings);
+    };
     InventProvider.prototype.remove = function (i) {
         this.categories.splice(i, 1);
+    };
+    InventProvider.prototype.eraseAllStorage = function () {
+        this.items = [];
+        this.settings = new Settings();
+        this.storage.set('items', this.items);
+        this.storage.set('settings', this.settings);
     };
     InventProvider = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
@@ -324,21 +357,21 @@ var AppModule = /** @class */ (function () {
             ],
             imports: [
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
-                __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["d" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* MyApp */], {}, {
+                __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["e" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* MyApp */], {}, {
                     links: [
                         { loadChildren: '../pages/inventory/inventory.module#InventoryPageModule', name: 'InventoryPage', segment: 'inventory', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/menu/menu.module#MenuPageModule', name: 'MenuPage', segment: 'menu', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/newitem/newitem.module#NewitemPageModule', name: 'NewitemPage', segment: 'newitem', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/newmenu/newmenu.module#NewmenuPageModule', name: 'NewmenuPage', segment: 'newmenu', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/selectinvent/selectinvent.module#SelectinventPageModule', name: 'SelectinventPage', segment: 'selectinvent', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/tab2/tab2.module#Tab2PageModule', name: 'Tab2Page', segment: 'tab2', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/special/special.module#SpecialPageModule', name: 'SpecialPage', segment: 'special', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/tab2/tab2.module#Tab2PageModule', name: 'Tab2Page', segment: 'tab2', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/tabs/tabs.module#TabsPageModule', name: 'TabsPage', segment: 'tabs', priority: 'low', defaultHistory: [] }
                     ]
                 }),
                 __WEBPACK_IMPORTED_MODULE_5__ionic_storage__["a" /* IonicStorageModule */].forRoot()
             ],
-            bootstrap: [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["b" /* IonicApp */]],
+            bootstrap: [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["c" /* IonicApp */]],
             entryComponents: [
                 __WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* MyApp */]
             ],
@@ -347,7 +380,7 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */],
                 __WEBPACK_IMPORTED_MODULE_7__providers_data_data__["a" /* DataProvider */],
                 __WEBPACK_IMPORTED_MODULE_8__providers_invent_invent__["a" /* InventProvider */],
-                { provide: __WEBPACK_IMPORTED_MODULE_1__angular_core__["u" /* ErrorHandler */], useClass: __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["c" /* IonicErrorHandler */] },
+                { provide: __WEBPACK_IMPORTED_MODULE_1__angular_core__["u" /* ErrorHandler */], useClass: __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["d" /* IonicErrorHandler */] },
             ]
         })
     ], AppModule);

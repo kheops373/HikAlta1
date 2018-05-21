@@ -27,7 +27,7 @@ var LoginPageModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_2__login__["a" /* LoginPage */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__login__["a" /* LoginPage */]),
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__login__["a" /* LoginPage */]),
             ],
         })
     ], LoginPageModule);
@@ -71,7 +71,7 @@ var LoginPage = /** @class */ (function () {
         console.log('ionViewDidLoad LoginPage');
     };
     LoginPage.prototype.doLogin = function () {
-        this.navCtrl.setRoot('MenuPage');
+        this.navCtrl.setRoot('TabsPage');
     };
     LoginPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({

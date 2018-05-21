@@ -6,29 +6,35 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>Create new item</ion-title>
-  </ion-navbar>
-
+    <ion-navbar>
+        <ion-title>{{this.titleText}}</ion-title>
+    </ion-navbar>
+    <ion-toolbar>
+        <ion-title>In the category : {{this.category.name}}</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 
 <ion-content padding>
-    <h1>Enter the details here</h1>
+    <h1></h1>
     
     <ion-item>
 		<ion-label color="primary" stacked>Name</ion-label>
-		<ion-input type="text" [(ngModel)]="name"></ion-input>
+		<ion-input type="text" [(ngModel)]="this.item.name"></ion-input>
 	</ion-item>
     <ion-item>
 		<ion-label color="primary" stacked>Type</ion-label>
-		<ion-input type="text" [(ngModel)]="type"></ion-input>
+		<ion-input type="text" [(ngModel)]="this.item.type"></ion-input>
 	</ion-item>
     <ion-item>
 		<ion-label color="primary" stacked>Description</ion-label>
-		<ion-input type="text" [(ngModel)]="desc"></ion-input>
+		<ion-input type="text" [(ngModel)]="this.item.description"></ion-input>
 	</ion-item>
+    <ion-item>
+        <ion-label color="primary" stacked>Weight (gr)</ion-label>
+        <ion-input type="number" [(ngModel)]="this.item.weight"></ion-input>
+    </ion-item>
     
-    <button ion-button outline (click)="createItemClicked()">Create</button>
+    <button ion-button outline (click)="actionButtonClicked()">{{this.actionButtonText}}</button>
     
 </ion-content>

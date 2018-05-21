@@ -17,6 +17,7 @@ export class TabsPage {
 
     tab1Root: any = 'InventoryPage';
     tab2Root: any = 'Tab2Page';
+    tabMRoot: any = 'NewmenuPage';
     myIndex: number;
 
 
