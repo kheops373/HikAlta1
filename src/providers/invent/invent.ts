@@ -14,6 +14,7 @@ export class Category {
     public id: number;
     public name: string;
     public description: string;
+    public show: false;
 
     constructor(name, description) {
         this.name = name;
@@ -124,6 +125,9 @@ export class InventProvider {
           
   }
 
+
+    /***                    S T O R A G E                       ***/
+
     saveAll() {
         this.storage.set('categories', this.categories);
         this.storage.set('items', this.items);
@@ -135,6 +139,18 @@ export class InventProvider {
     saveItems() {
         this.storage.set('items', this.items);
     }
+
+    eraseAllStorage() {
+        this.items = [];
+        this.settings = new Settings();
+		this.backpack = new BackPack();
+        this.storage.remove('items');
+        this.storage.set('settings', this.settings);
+		this.storage.remove('backpack');
+    }
+
+
+
 
     /***                   I N V E N T O R I E S                  ***/
 
@@ -223,6 +239,16 @@ export class InventProvider {
     }
 
 
+    countItemsByCategory(category) {
+        let n = 0;
+        for(var i = this.items.length - 1; i >= 0; i--) {
+            if(this.items[i].inventory == this.settings.selectedInventory && this.items[i].category == category.id) {
+               n++;
+            }
+        }
+        return n;
+    }
+
 
 
     /***                        B A C K P A C K                     ***/
@@ -246,7 +272,7 @@ export class InventProvider {
 	itemIsInBackpack(item) {
 		for(var i = this.backpack.items.length - 1; i >= 0; i--) {
             if(this.backpack.items[i] == item.id) {
-               return { 'color': 'green', 'icon': 'close', 'action':'remove', background: '#EEE' };
+               return { 'color': 'green', 'icon': 'remove', 'action':'remove', background: '#EEE' };
             }
         }
 		return { 'color': 'gray', 'icon': 'add', 'action':'add', background: '' };
@@ -262,10 +288,10 @@ export class InventProvider {
 	}
 
     calculateBackpackTotalWeight() {
-        this.totalWeight = 0;
+        this.backpack.totalWeight = 0;
 		for(var i = this.items.length - 1; i >= 0; i--) {
             if( this.boolItemIsInBackpack(this.items[i]) ) {
-               this.totalWeight += this.items[i].weight;
+               this.backpack.totalWeight += this.items[i].weight;
             }
         }
     }
@@ -281,23 +307,25 @@ export class InventProvider {
 		return weight;
 	}
   
-  
 
-    
-
-    remove(i)
-    {
-        this.categories.splice(i,1);
+    countBackpackItemsByCategory(backpack, category) {
+        let n = 0;
+        for(var i = this.items.length - 1; i >= 0; i--) {
+            if(this.items[i].inventory == this.settings.selectedInventory && this.items[i].category == category.id && this.boolItemIsInBackpack(this.items[i])) {
+               n++;
+            }
+        }
+        return n;
     }
 
-
-    eraseAllStorage() {
-        this.items = [];
-        this.settings = new Settings();
-		this.backpack = new BackPack();
-        this.storage.remove('items');
-        this.storage.remove('settings');
-		this.storage.remove('backpack');
+    calculateBackpackWeightByCateogry(backpack, category) {
+        let weight = 0;
+        for(var i = this.items.length - 1; i >= 0; i--) {
+            if(this.items[i].inventory == this.settings.selectedInventory && this.items[i].category == category.id && this.boolItemIsInBackpack(this.items[i])) {
+               weight += this.items[i].weight;
+            }
+        }
+        return weight;
     }
 
 

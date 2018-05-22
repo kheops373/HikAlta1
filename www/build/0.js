@@ -75,7 +75,7 @@ var TabsPage = /** @class */ (function () {
     };
     TabsPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-tabs',template:/*ion-inline-start:"C:\Users\anton\Documents\Dev\HikAlfa1\src\pages\tabs\tabs.html"*/'\n\n<ion-tabs [selectedIndex]="myIndex">\n\n  <ion-tab [root]="tab1Root" tabTitle="Inventory" tabIcon="cube"></ion-tab>\n\n  <ion-tab [root]="tab2Root" tabTitle="Backpack" tabIcon="bonfire"></ion-tab>\n\n  <ion-tab [root]="tabMRoot" tabTitle="Menu" tabIcon="menu"></ion-tab>\n\n</ion-tabs>\n\n'/*ion-inline-end:"C:\Users\anton\Documents\Dev\HikAlfa1\src\pages\tabs\tabs.html"*/,
+            selector: 'page-tabs',template:/*ion-inline-start:"C:\Users\anton\Documents\Dev\HikAlfa1\src\pages\tabs\tabs.html"*/'\n\n<ion-tabs [selectedIndex]="myIndex">\n\n  <ion-tab [root]="tab1Root" tabTitle="Inventory" tabIcon="cube"></ion-tab>\n\n  <ion-tab [root]="tab2Root" tabTitle="Backpack" tabIcon="bonfire"></ion-tab>\n\n  <ion-tab [root]="tabMRoot" tabTitle="Menu" tabIcon="options"></ion-tab>\n\n</ion-tabs>\n\n'/*ion-inline-end:"C:\Users\anton\Documents\Dev\HikAlfa1\src\pages\tabs\tabs.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]])
     ], TabsPage);

@@ -41,7 +41,7 @@ export class NewitemPage {
           this.category = navParams.get('category');
           this.titleText = 'Edit item';
           this.actionButtonText = 'Save';
-          this.weight = this.item.weight;
+          this.weight = this.item.weight.toString();
       }
       
   }
@@ -53,6 +53,7 @@ export class NewitemPage {
             this.item.weight = parseInt(this.weight);
             this.invent.createItemByItem(this.item);
         } else if( this.operation == 'edit' ) {
+            this.item.weight = parseInt(this.weight);
             this.invent.saveItems();
         }
         // ADJUST CATEGORY !!!

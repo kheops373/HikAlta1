@@ -27,8 +27,8 @@ export class BackpackPage {
 		}
 	}
     
-    /*ionViewWillEnter() {
+    ionViewWillEnter() {
         this.invent.calculateBackpackTotalWeight();
-    }*/
+    }
 
 }
