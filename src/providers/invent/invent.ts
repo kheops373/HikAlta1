@@ -14,7 +14,7 @@ export class Category {
     public id: number;
     public name: string;
     public description: string;
-    public show: false;
+    public show: boolean;
 
     constructor(name, description) {
         this.name = name;
@@ -80,11 +80,11 @@ export class InventProvider {
 
     inventories : string[] = ["Hiking", "Travel"];
     settings : Settings = new Settings();
-    categories : Category[] = [ {'id':0, 'name':'Clothes', 'description':'...'},
-                                {'id':1, 'name':'Shelter', 'description':'...'},
-                                {'id':2, 'name':'Sleeping system', 'description':'...'},
-                                {'id':3, 'name':'Cookware', 'description':'...'},
-                                {'id':4, 'name':'Tools', 'description':'...'} ];
+    categories : Category[] = [ {'id':0, 'name':'Clothes', 'description':'...', 'show': true},
+                                {'id':1, 'name':'Shelter', 'description':'...', 'show': true},
+                                {'id':2, 'name':'Sleeping system', 'description':'...', 'show': true},
+                                {'id':3, 'name':'Cookware', 'description':'...', 'show': true},
+                                {'id':4, 'name':'Tools', 'description':'...', 'show': true} ];
     items : InventoryItem[] = [];
 	public backpack : BackPack = new BackPack();
 
@@ -147,6 +147,8 @@ export class InventProvider {
         this.storage.remove('items');
         this.storage.set('settings', this.settings);
 		this.storage.remove('backpack');
+        this.inventories = ["Hiking", "Travel"]
+        this.storage.set('inventories', this.inventories);
     }
 
 
@@ -290,7 +292,7 @@ export class InventProvider {
     calculateBackpackTotalWeight() {
         this.backpack.totalWeight = 0;
 		for(var i = this.items.length - 1; i >= 0; i--) {
-            if( this.boolItemIsInBackpack(this.items[i]) ) {
+            if( this.items[i].inventory == this.settings.selectedInventory && this.boolItemIsInBackpack(this.items[i]) ) {
                this.backpack.totalWeight += this.items[i].weight;
             }
         }
@@ -299,7 +301,7 @@ export class InventProvider {
 	totalBackpackWeight() {
 		let weight: number = 0;
 		for(var i = this.items.length - 1; i >= 0; i--) {
-            if( this.boolItemIsInBackpack(this.items[i]) ) {
+            if( this.items[i].inventory == this.settings.selectedInventory && this.boolItemIsInBackpack(this.items[i]) ) {
                weight += this.items[i].weight;
             }
         }

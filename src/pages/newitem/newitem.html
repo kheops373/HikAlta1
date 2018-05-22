@@ -12,14 +12,11 @@
             <a style="font-size:12pt" (click)="actionButtonClicked()">{{this.actionButtonText}}</a>
 		</ion-buttons>
     </ion-navbar>
-    <ion-toolbar>
-        <ion-title>In the category : {{this.category.name}}</ion-title>
-    </ion-toolbar>
 </ion-header>
 
 
 <ion-content padding>
-    <h1></h1>
+    <ion-item-divider><h1>In the category : {{this.category.name}}</h1></ion-item-divider>
     
     <ion-item>
 		<ion-label color="primary" stacked>Name</ion-label>

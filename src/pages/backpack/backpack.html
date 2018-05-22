@@ -7,20 +7,22 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>BackPack weight: {{this.invent.backpack.totalWeight}} gr</ion-title>
+    <ion-title>BackPack</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+    
+    <ion-item-divider><h1>Total weight: {{this.invent.backpack.totalWeight}} gr</h1></ion-item-divider>
 
 	<ion-list *ngFor="let cat of this.invent.getCategories()">
 	
-        <ion-item-divider style="font-weight: bold; font-size: 12pt; ">
+        <ion-list-header style="font-weight: bold; font-size: 12pt; ">
             <ion-icon item-start small [name]="cat.show ? 'arrow-dropdown' : 'arrow-dropright'" (click)="cat.show = cat.show ? false : true"></ion-icon>
             {{cat.name}} ({{this.invent.countBackpackItemsByCategory('', cat)}}/{{this.invent.countItemsByCategory(cat)}}) - {{this.invent.calculateBackpackWeightByCateogry('', cat)}} gr
-        </ion-item-divider>
+        </ion-list-header>
         
 
         <ng-container *ngIf="cat.show">

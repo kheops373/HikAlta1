@@ -52,6 +52,7 @@ export class NewitemPage {
             //this.invent.createItem( this.item.name, this.item.description, this.category.id);
             this.item.weight = parseInt(this.weight);
             this.invent.createItemByItem(this.item);
+            this.category.show = true;
         } else if( this.operation == 'edit' ) {
             this.item.weight = parseInt(this.weight);
             this.invent.saveItems();

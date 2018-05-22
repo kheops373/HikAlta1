@@ -42,11 +42,11 @@ var map = {
 		2
 	],
 	"../pages/selectinvent/selectinvent.module": [
-		279,
+		280,
 		1
 	],
 	"../pages/tabs/tabs.module": [
-		280,
+		279,
 		0
 	]
 };
@@ -141,11 +141,11 @@ var InventProvider = /** @class */ (function () {
         this.storage = storage;
         this.inventories = ["Hiking", "Travel"];
         this.settings = new Settings();
-        this.categories = [{ 'id': 0, 'name': 'Clothes', 'description': '...' },
-            { 'id': 1, 'name': 'Shelter', 'description': '...' },
-            { 'id': 2, 'name': 'Sleeping system', 'description': '...' },
-            { 'id': 3, 'name': 'Cookware', 'description': '...' },
-            { 'id': 4, 'name': 'Tools', 'description': '...' }];
+        this.categories = [{ 'id': 0, 'name': 'Clothes', 'description': '...', 'show': true },
+            { 'id': 1, 'name': 'Shelter', 'description': '...', 'show': true },
+            { 'id': 2, 'name': 'Sleeping system', 'description': '...', 'show': true },
+            { 'id': 3, 'name': 'Cookware', 'description': '...', 'show': true },
+            { 'id': 4, 'name': 'Tools', 'description': '...', 'show': true }];
         this.items = [];
         this.backpack = new BackPack();
         storage.get('settings').then(function (storedItems) {
@@ -196,6 +196,8 @@ var InventProvider = /** @class */ (function () {
         this.storage.remove('items');
         this.storage.set('settings', this.settings);
         this.storage.remove('backpack');
+        this.inventories = ["Hiking", "Travel"];
+        this.storage.set('inventories', this.inventories);
     };
     /***                   I N V E N T O R I E S                  ***/
     InventProvider.prototype.getInventories = function () {
@@ -313,7 +315,7 @@ var InventProvider = /** @class */ (function () {
     InventProvider.prototype.calculateBackpackTotalWeight = function () {
         this.backpack.totalWeight = 0;
         for (var i = this.items.length - 1; i >= 0; i--) {
-            if (this.boolItemIsInBackpack(this.items[i])) {
+            if (this.items[i].inventory == this.settings.selectedInventory && this.boolItemIsInBackpack(this.items[i])) {
                 this.backpack.totalWeight += this.items[i].weight;
             }
         }
@@ -321,7 +323,7 @@ var InventProvider = /** @class */ (function () {
     InventProvider.prototype.totalBackpackWeight = function () {
         var weight = 0;
         for (var i = this.items.length - 1; i >= 0; i--) {
-            if (this.boolItemIsInBackpack(this.items[i])) {
+            if (this.items[i].inventory == this.settings.selectedInventory && this.boolItemIsInBackpack(this.items[i])) {
                 weight += this.items[i].weight;
             }
         }
@@ -456,8 +458,8 @@ var AppModule = /** @class */ (function () {
                         { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/newitem/newitem.module#NewitemPageModule', name: 'NewitemPage', segment: 'newitem', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/newmenu/newmenu.module#NewmenuPageModule', name: 'NewmenuPage', segment: 'newmenu', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/selectinvent/selectinvent.module#SelectinventPageModule', name: 'SelectinventPage', segment: 'selectinvent', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/tabs/tabs.module#TabsPageModule', name: 'TabsPage', segment: 'tabs', priority: 'low', defaultHistory: [] }
+                        { loadChildren: '../pages/tabs/tabs.module#TabsPageModule', name: 'TabsPage', segment: 'tabs', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/selectinvent/selectinvent.module#SelectinventPageModule', name: 'SelectinventPage', segment: 'selectinvent', priority: 'low', defaultHistory: [] }
                     ]
                 }),
                 __WEBPACK_IMPORTED_MODULE_5__ionic_storage__["a" /* IonicStorageModule */].forRoot()

@@ -1,11 +1,9 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Inventory: {{this.invent.settings.selectedInventory}}</ion-title>
+    <ion-title>Inventory</ion-title>
     <ion-buttons end>
-        <button ion-button (click)="selectInventory()">
-            <ion-icon name="book"></ion-icon>
-        </button>
+
     </ion-buttons>
   </ion-navbar>
 
@@ -14,13 +12,15 @@
 
 <ion-content padding>
 	
+    <ion-item-divider><h1>{{this.invent.settings.selectedInventory}}</h1><ion-icon name="list" item-end  (click)="selectInventory()"></ion-icon></ion-item-divider>
+    
     <ion-list *ngFor="let cat of this.invent.getCategories()">
 	
-        <ion-item-divider style="font-weight: bold; font-size: 12pt; ">
+        <ion-list-header style="font-weight: bold; font-size: 12pt; ">
             <ion-icon item-start small [name]="cat.show ? 'arrow-dropdown' : 'arrow-dropright'" (click)="cat.show = cat.show ? false : true"></ion-icon>
             {{cat.name}} ({{this.invent.countItemsByCategory(cat)}})
             <button ion-button item-end small round outline (click)="newItemToCategory(cat)"><ion-icon name="add"></ion-icon></button>
-        </ion-item-divider>
+        </ion-list-header>
         
 
         <ng-container *ngIf="cat.show">
@@ -28,7 +28,7 @@
                     <h2 style="color:green; font-weight:bold;" (click)="itemTapped(item, cat)">{{item.name}}</h2>
                     <p>{{item.description}} - {{item.weight.toString()}} gr</p>
                 <!--<button ion-button round outline item-end (click)="removeItem($event, item)"><ion-icon name="backspace"></ion-icon></button>-->
-                <ion-icon item-end small name="close" color="primary" (click)="removeItem($event, item)"></ion-icon>
+                <ion-icon item-end name="close" color="primary" (click)="removeItem($event, item)"></ion-icon>
             </ion-item>
         </ng-container>
     </ion-list>

@@ -18,6 +18,8 @@
 
 <ion-content padding>
     <ion-list>
-        <ion-card *ngFor="let item of this.invent.getInventories(); let i=index" (click)="selectInvent($event, item)"><ion-item [color]="inventSelected(item)">{{item}}</ion-item></ion-card>
+        <ion-card *ngFor="let item of this.invent.getInventories()" (click)="selectInvent($event, item)">
+            <ion-item [color]="inventSelected(item)">{{item}}</ion-item>
+        </ion-card>
     </ion-list>
 </ion-content>
