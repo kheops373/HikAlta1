@@ -49,6 +49,7 @@ export class InventoryItem {
 
 export class BackPack {
 	public items: number[] = [];
+    public totalWeight: number = 0;
 
 }
 
@@ -115,11 +116,11 @@ export class InventProvider {
             };
           });
 	  
-	  /*storage.get('backpack').then((storedItems) => {
+	  storage.get('backpack').then((storedItems) => {
             if( storedItems){
                 this.backpack = storedItems;
             }
-          });*/
+          });
           
   }
 
@@ -135,7 +136,7 @@ export class InventProvider {
         this.storage.set('items', this.items);
     }
 
-
+    /***                   I N V E N T O R I E S                  ***/
 
     getInventories() {
         return this.inventories;
@@ -149,7 +150,8 @@ export class InventProvider {
         this.storage.set('settings', this.settings);
     }
 
-
+    
+    /***                    C A T E G O R I E S                 ***/
 
     getCategories() {
         return this.categories;
@@ -178,6 +180,7 @@ export class InventProvider {
 
 
 
+    /***                        I  T  E  M  S                   ***/
 
     getItems(category) {
         let res : InventoryItem[] = [];
@@ -221,8 +224,12 @@ export class InventProvider {
 
 
 
+
+    /***                        B A C K P A C K                     ***/
+
 	addItemToBackpack(item) {
 		this.backpack.items.push(item.id);
+        this.backpack.totalWeight += item.weight;
 		this.storage.set('backpack', this.backpack);
 	}
 
@@ -232,6 +239,7 @@ export class InventProvider {
                this.backpack.items.splice(i, 1);;
             }
         }
+        this.backpack.totalWeight -= item.weight;
 		this.storage.set('backpack', this.backpack);
 	}
 
@@ -253,11 +261,20 @@ export class InventProvider {
 		return false;
 	}
 
+    calculateBackpackTotalWeight() {
+        this.totalWeight = 0;
+		for(var i = this.items.length - 1; i >= 0; i--) {
+            if( this.boolItemIsInBackpack(this.items[i]) ) {
+               this.totalWeight += this.items[i].weight;
+            }
+        }
+    }
+
 	totalBackpackWeight() {
 		let weight: number = 0;
 		for(var i = this.items.length - 1; i >= 0; i--) {
             if( this.boolItemIsInBackpack(this.items[i]) ) {
-               weight = weight + this.items[i].weight;
+               weight += this.items[i].weight;
             }
         }
 		
@@ -265,6 +282,7 @@ export class InventProvider {
 	}
   
   
+
     
 
     remove(i)
@@ -277,9 +295,9 @@ export class InventProvider {
         this.items = [];
         this.settings = new Settings();
 		this.backpack = new BackPack();
-        this.storage.set('items', this.items);
-        this.storage.set('settings', this.settings);
-		this.storage.set('backpack', this.backpack);
+        this.storage.remove('items');
+        this.storage.remove('settings');
+		this.storage.remove('backpack');
     }
 
 

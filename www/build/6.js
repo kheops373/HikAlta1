@@ -1,14 +1,14 @@
 webpackJsonp([6],{
 
-/***/ 275:
+/***/ 274:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InventoryPageModule", function() { return InventoryPageModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BackpackPageModule", function() { return BackpackPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(100);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__inventory__ = __webpack_require__(283);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__backpack__ = __webpack_require__(281);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,31 +18,31 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var InventoryPageModule = /** @class */ (function () {
-    function InventoryPageModule() {
+var BackpackPageModule = /** @class */ (function () {
+    function BackpackPageModule() {
     }
-    InventoryPageModule = __decorate([
+    BackpackPageModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__inventory__["a" /* InventoryPage */],
+                __WEBPACK_IMPORTED_MODULE_2__backpack__["a" /* BackpackPage */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__inventory__["a" /* InventoryPage */]),
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__backpack__["a" /* BackpackPage */]),
             ],
         })
-    ], InventoryPageModule);
-    return InventoryPageModule;
+    ], BackpackPageModule);
+    return BackpackPageModule;
 }());
 
-//# sourceMappingURL=inventory.module.js.map
+//# sourceMappingURL=backpack.module.js.map
 
 /***/ }),
 
-/***/ 283:
+/***/ 281:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InventoryPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BackpackPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(100);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_invent_invent__ = __webpack_require__(194);
@@ -59,63 +59,36 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 /**
- * Generated class for the InventoryPage page.
+ * Generated class for the BackpackPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-var InventoryPage = /** @class */ (function () {
-    function InventoryPage(app, navCtrl, modalCtrl, viewCtrl, invent, alertCtrl) {
-        this.app = app;
+var BackpackPage = /** @class */ (function () {
+    function BackpackPage(navCtrl, navParams, invent) {
         this.navCtrl = navCtrl;
-        this.modalCtrl = modalCtrl;
-        this.viewCtrl = viewCtrl;
+        this.navParams = navParams;
         this.invent = invent;
-        this.alertCtrl = alertCtrl;
     }
-    InventoryPage.prototype.newItemToCategory = function (category) {
-        this.app.getRootNav().push('NewitemPage', { 'operation': 'create', 'category': category });
+    BackpackPage.prototype.addRemoveItem = function (item, action) {
+        if (action == 'add') {
+            this.invent.addItemToBackpack(item);
+        }
+        else if (action == 'remove') {
+            this.invent.removeItemFromBackpack(item);
+        }
     };
-    InventoryPage.prototype.itemTapped = function (item, category) {
-        this.app.getRootNav().push('NewitemPage', { 'operation': 'edit', 'item': item, 'category': category });
-    };
-    InventoryPage.prototype.removeItem = function (event, item) {
-        var _this = this;
-        var al = this.alertCtrl.create({
-            title: 'Remove item',
-            message: 'Are you sure you want to remove the item ' + item.name + '?',
-            buttons: [
-                {
-                    text: 'Cancel',
-                    role: 'cancel',
-                    handler: function () {
-                        console.log('Cancel clicked');
-                    }
-                },
-                {
-                    text: 'Confirm',
-                    handler: function () {
-                        _this.invent.removeItemById(item.id);
-                    }
-                }
-            ]
-        });
-        al.present();
-    };
-    InventoryPage.prototype.selectInventory = function () {
-        var selectInv = this.modalCtrl.create('SelectinventPage', { currentInvent: "curr" });
-        selectInv.present();
-    };
-    InventoryPage = __decorate([
+    BackpackPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-inventory',template:/*ion-inline-start:"c:\Users\anton.ryhlov\cordova\git\HikAlfa1\src\pages\inventory\inventory.html"*/'<ion-header>\n\n\n\n  <ion-navbar>\n\n    <ion-title>Inventory: {{this.invent.settings.selectedInventory}}</ion-title>\n\n    <ion-buttons end>\n\n        <button ion-button (click)="selectInventory()">\n\n            <ion-icon name="book"></ion-icon>\n\n        </button>\n\n    </ion-buttons>\n\n  </ion-navbar>\n\n\n\n</ion-header>\n\n\n\n\n\n<ion-content padding>\n\n	\n\n    <ion-list *ngFor="let cat of this.invent.getCategories()">\n\n	\n\n        <ion-item-divider style="font-weight: bold; font-size: 13pt; ">{{cat.name}}\n\n            <button ion-button item-end small round outline (click)="newItemToCategory(cat)"><ion-icon name="add"></ion-icon></button>\n\n        </ion-item-divider>\n\n        \n\n\n\n        <ion-item *ngFor="let item of this.invent.getItems(cat); let i=index">\n\n                <h2 style="color:green; font-weight:bold;" (click)="itemTapped(item, cat)">{{item.name}}</h2>\n\n                <p>{{item.description}} - {{item.weight}}gr ({{item.id}})</p>\n\n            <!--<button ion-button round outline item-end (click)="removeItem($event, item)"><ion-icon name="backspace"></ion-icon></button>-->\n\n            <ion-icon item-end small name="close" color="primary" (click)="removeItem($event, item)"></ion-icon>\n\n        </ion-item>\n\n    </ion-list>\n\n	\n\n\n\n	\n\n	<!--<ion-fab bottom right>\n\n        <button ion-fab (click)="addButtonClicked($event)"><ion-icon name="add"></ion-icon></button>\n\n    </ion-fab>-->\n\n</ion-content>'/*ion-inline-end:"c:\Users\anton.ryhlov\cordova\git\HikAlfa1\src\pages\inventory\inventory.html"*/,
+            selector: 'page-backpack',template:/*ion-inline-start:"C:\Users\anton\Documents\Dev\HikAlfa1\src\pages\backpack\backpack.html"*/'<!--\n  Generated template for the BackpackPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>BackPack weight: {{this.invent.totalBackpackWeight()}} gr</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n\n	<ion-list *ngFor="let cat of this.invent.getCategories()">\n	\n        <ion-item-divider style="font-weight: bold; font-size: 13pt; ">{{cat.name}}\n        </ion-item-divider>\n        \n\n        <ng-container *ngFor="let item of this.invent.getItems(cat)" >\n			<ion-item *ngIf="this.invent.itemIsInBackpack(item) as param" [style.background-color]="param.background">\n					<h2 [style.color]="param.color" style="font-weight:bold;" (click)="itemTapped(item, cat)">{{item.name}}</h2>\n					<p>{{item.description}} - {{item.weight}} gr</p>\n				<ion-icon item-end small [name]="param.icon" color="primary" (click)="addRemoveItem(item, param.action)"></ion-icon>\n			</ion-item>\n        </ng-container>\n		\n		\n    </ion-list>\n	\n</ion-content>\n'/*ion-inline-end:"C:\Users\anton\Documents\Dev\HikAlfa1\src\pages\backpack\backpack.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* App */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* ModalController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* ViewController */], __WEBPACK_IMPORTED_MODULE_2__providers_invent_invent__["a" /* InventProvider */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]])
-    ], InventoryPage);
-    return InventoryPage;
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__providers_invent_invent__["a" /* InventProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_invent_invent__["a" /* InventProvider */]) === "function" && _c || Object])
+    ], BackpackPage);
+    return BackpackPage;
+    var _a, _b, _c;
 }());
 
-//# sourceMappingURL=inventory.js.map
+//# sourceMappingURL=backpack.js.map
 
 /***/ })
 

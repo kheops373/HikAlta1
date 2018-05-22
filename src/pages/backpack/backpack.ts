@@ -26,5 +26,9 @@ export class BackpackPage {
 			this.invent.removeItemFromBackpack(item);
 		}
 	}
+    
+    /*ionViewWillEnter() {
+        this.invent.calculateBackpackTotalWeight();
+    }*/
 
 }

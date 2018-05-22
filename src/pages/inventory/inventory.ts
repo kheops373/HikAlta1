@@ -37,27 +37,31 @@ export class InventoryPage {
 	}
 	removeItem(event, item)
 	{
-        let al = this.alertCtrl.create({
-            title: 'Remove item',
-            message: 'Are you sure you want to remove the item '+item.name+'?',
-            buttons: [
-              {
-                text: 'Cancel',
-                role: 'cancel',
-                handler: () => {
-                  console.log('Cancel clicked');
-                }
-              },
-              {
-                text: 'Confirm',
-                handler: () => {
-                    this.invent.removeItemById(item.id);
-                }
-              }
-            ]
-          });
-        al.present();
-
+        
+        if( this.invent.boolItemIsInBackpack(item) ) {
+            alert("Item is part of a backpack and cannot be removed!");
+        } else {
+            let al = this.alertCtrl.create({
+                title: 'Remove item',
+                message: 'Are you sure you want to remove the item '+item.name+'?',
+                buttons: [
+                  {
+                    text: 'Cancel',
+                    role: 'cancel',
+                    handler: () => {
+                      console.log('Cancel clicked');
+                    }
+                  },
+                  {
+                    text: 'Confirm',
+                    handler: () => {
+                        this.invent.removeItemById(item.id);
+                    }
+                  }
+                ]
+              });
+            al.present();
+        }
 		
 
 	}

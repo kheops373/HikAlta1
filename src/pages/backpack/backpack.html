@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>BackPack weight: {{this.invent.totalBackpackWeight()}}</ion-title>
+    <ion-title>BackPack weight: {{this.invent.totalBackpackWeight()}} gr</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -24,7 +24,7 @@
         <ng-container *ngFor="let item of this.invent.getItems(cat)" >
 			<ion-item *ngIf="this.invent.itemIsInBackpack(item) as param" [style.background-color]="param.background">
 					<h2 [style.color]="param.color" style="font-weight:bold;" (click)="itemTapped(item, cat)">{{item.name}}</h2>
-					<p>{{item.description}} - {{item.weight}}gr ({{item.id}})</p>
+					<p>{{item.description}} - {{item.weight}} gr</p>
 				<ion-icon item-end small [name]="param.icon" color="primary" (click)="addRemoveItem(item, param.action)"></ion-icon>
 			</ion-item>
         </ng-container>

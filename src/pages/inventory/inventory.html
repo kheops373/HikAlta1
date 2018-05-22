@@ -23,7 +23,7 @@
 
         <ion-item *ngFor="let item of this.invent.getItems(cat); let i=index">
                 <h2 style="color:green; font-weight:bold;" (click)="itemTapped(item, cat)">{{item.name}}</h2>
-                <p>{{item.description}} - {{item.weight}}gr ({{item.id}})</p>
+                <p>{{item.description}} - {{item.weight.toString()}} gr</p>
             <!--<button ion-button round outline item-end (click)="removeItem($event, item)"><ion-icon name="backspace"></ion-icon></button>-->
             <ion-icon item-end small name="close" color="primary" (click)="removeItem($event, item)"></ion-icon>
         </ion-item>

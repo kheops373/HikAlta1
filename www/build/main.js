@@ -1,4 +1,4 @@
-webpackJsonp([8],{
+webpackJsonp([7],{
 
 /***/ 109:
 /***/ (function(module, exports) {
@@ -23,34 +23,30 @@ webpackEmptyAsyncContext.id = 109;
 var map = {
 	"../pages/backpack/backpack.module": [
 		274,
-		7
+		6
 	],
 	"../pages/inventory/inventory.module": [
 		275,
-		6
+		5
 	],
 	"../pages/login/login.module": [
 		276,
-		5
+		4
 	],
 	"../pages/newitem/newitem.module": [
 		277,
-		4
+		3
 	],
 	"../pages/newmenu/newmenu.module": [
 		278,
-		3
+		2
 	],
 	"../pages/selectinvent/selectinvent.module": [
 		279,
-		2
-	],
-	"../pages/special/special.module": [
-		280,
 		1
 	],
 	"../pages/tabs/tabs.module": [
-		281,
+		280,
 		0
 	]
 };
@@ -119,6 +115,7 @@ var InventoryItem = /** @class */ (function () {
 var BackPack = /** @class */ (function () {
     function BackPack() {
         this.items = [];
+        this.totalWeight = 0;
     }
     return BackPack;
 }());
@@ -175,11 +172,11 @@ var InventProvider = /** @class */ (function () {
             }
             ;
         });
-        /*storage.get('backpack').then((storedItems) => {
-              if( storedItems){
-                  this.backpack = storedItems;
-              }
-            });*/
+        storage.get('backpack').then(function (storedItems) {
+            if (storedItems) {
+                _this.backpack = storedItems;
+            }
+        });
     }
     InventProvider.prototype.saveAll = function () {
         this.storage.set('categories', this.categories);
@@ -191,6 +188,7 @@ var InventProvider = /** @class */ (function () {
     InventProvider.prototype.saveItems = function () {
         this.storage.set('items', this.items);
     };
+    /***                   I N V E N T O R I E S                  ***/
     InventProvider.prototype.getInventories = function () {
         return this.inventories;
     };
@@ -202,6 +200,7 @@ var InventProvider = /** @class */ (function () {
         this.settings.selectedInventory = name;
         this.storage.set('settings', this.settings);
     };
+    /***                    C A T E G O R I E S                 ***/
     InventProvider.prototype.getCategories = function () {
         return this.categories;
     };
@@ -224,6 +223,7 @@ var InventProvider = /** @class */ (function () {
             }
         }
     };
+    /***                        I  T  E  M  S                   ***/
     InventProvider.prototype.getItems = function (category) {
         var res = [];
         this.items.forEach(function (element) {
@@ -260,8 +260,10 @@ var InventProvider = /** @class */ (function () {
         this.storage.set('items', this.items);
         this.storage.set('settings', this.settings);
     };
+    /***                        B A C K P A C K                     ***/
     InventProvider.prototype.addItemToBackpack = function (item) {
         this.backpack.items.push(item.id);
+        this.backpack.totalWeight += item.weight;
         this.storage.set('backpack', this.backpack);
     };
     InventProvider.prototype.removeItemFromBackpack = function (item) {
@@ -271,6 +273,7 @@ var InventProvider = /** @class */ (function () {
                 ;
             }
         }
+        this.backpack.totalWeight -= item.weight;
         this.storage.set('backpack', this.backpack);
     };
     InventProvider.prototype.itemIsInBackpack = function (item) {
@@ -289,11 +292,19 @@ var InventProvider = /** @class */ (function () {
         }
         return false;
     };
+    InventProvider.prototype.calculateBackpackTotalWeight = function () {
+        this.totalWeight = 0;
+        for (var i = this.items.length - 1; i >= 0; i--) {
+            if (this.boolItemIsInBackpack(this.items[i])) {
+                this.totalWeight += this.items[i].weight;
+            }
+        }
+    };
     InventProvider.prototype.totalBackpackWeight = function () {
         var weight = 0;
         for (var i = this.items.length - 1; i >= 0; i--) {
             if (this.boolItemIsInBackpack(this.items[i])) {
-                weight = weight + this.items[i].weight;
+                weight += this.items[i].weight;
             }
         }
         return weight;
@@ -305,15 +316,16 @@ var InventProvider = /** @class */ (function () {
         this.items = [];
         this.settings = new Settings();
         this.backpack = new BackPack();
-        this.storage.set('items', this.items);
-        this.storage.set('settings', this.settings);
-        this.storage.set('backpack', this.backpack);
+        this.storage.remove('items');
+        this.storage.remove('settings');
+        this.storage.remove('backpack');
     };
     InventProvider = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__ionic_storage__["b" /* Storage */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__ionic_storage__["b" /* Storage */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__ionic_storage__["b" /* Storage */]) === "function" && _a || Object])
     ], InventProvider);
     return InventProvider;
+    var _a;
 }());
 
 //# sourceMappingURL=invent.js.map
@@ -420,7 +432,6 @@ var AppModule = /** @class */ (function () {
                         { loadChildren: '../pages/newitem/newitem.module#NewitemPageModule', name: 'NewitemPage', segment: 'newitem', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/newmenu/newmenu.module#NewmenuPageModule', name: 'NewmenuPage', segment: 'newmenu', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/selectinvent/selectinvent.module#SelectinventPageModule', name: 'SelectinventPage', segment: 'selectinvent', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/special/special.module#SpecialPageModule', name: 'SpecialPage', segment: 'special', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/tabs/tabs.module#TabsPageModule', name: 'TabsPage', segment: 'tabs', priority: 'low', defaultHistory: [] }
                     ]
                 }),
@@ -481,7 +492,7 @@ var MyApp = /** @class */ (function () {
         });
     }
     MyApp = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"c:\Users\anton.ryhlov\cordova\git\HikAlfa1\src\app\app.html"*/'<ion-nav [root]="rootPage"></ion-nav>\n'/*ion-inline-end:"c:\Users\anton.ryhlov\cordova\git\HikAlfa1\src\app\app.html"*/
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"C:\Users\anton\Documents\Dev\HikAlfa1\src\app\app.html"*/'<ion-nav [root]="rootPage"></ion-nav>\n\n'/*ion-inline-end:"C:\Users\anton\Documents\Dev\HikAlfa1\src\app\app.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* Platform */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */]])
     ], MyApp);

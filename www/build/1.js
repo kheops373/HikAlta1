@@ -1,14 +1,14 @@
 webpackJsonp([1],{
 
-/***/ 280:
+/***/ 279:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SpecialPageModule", function() { return SpecialPageModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SelectinventPageModule", function() { return SelectinventPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(100);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__special__ = __webpack_require__(288);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__selectinvent__ = __webpack_require__(286);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,33 +18,34 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var SpecialPageModule = /** @class */ (function () {
-    function SpecialPageModule() {
+var SelectinventPageModule = /** @class */ (function () {
+    function SelectinventPageModule() {
     }
-    SpecialPageModule = __decorate([
+    SelectinventPageModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__special__["a" /* SpecialPage */],
+                __WEBPACK_IMPORTED_MODULE_2__selectinvent__["a" /* SelectinventPage */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__special__["a" /* SpecialPage */]),
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__selectinvent__["a" /* SelectinventPage */]),
             ],
         })
-    ], SpecialPageModule);
-    return SpecialPageModule;
+    ], SelectinventPageModule);
+    return SelectinventPageModule;
 }());
 
-//# sourceMappingURL=special.module.js.map
+//# sourceMappingURL=selectinvent.module.js.map
 
 /***/ }),
 
-/***/ 288:
+/***/ 286:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SpecialPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SelectinventPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_invent_invent__ = __webpack_require__(194);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -56,30 +57,38 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
 /**
- * Generated class for the SpecialPage page.
+ * Generated class for the SelectinventPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-var SpecialPage = /** @class */ (function () {
-    function SpecialPage(navCtrl, navParams) {
+var SelectinventPage = /** @class */ (function () {
+    function SelectinventPage(navCtrl, navParams, viewCtrl, invent) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
+        this.viewCtrl = viewCtrl;
+        this.invent = invent;
     }
-    SpecialPage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad SpecialPage');
+    SelectinventPage.prototype.inventSelected = function (item) {
+        if (this.invent.settings.selectedInventory == item)
+            return "primary";
     };
-    SpecialPage = __decorate([
+    SelectinventPage.prototype.selectInvent = function (event, item) {
+        this.invent.selectInventory(item);
+        this.viewCtrl.dismiss();
+    };
+    SelectinventPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-special',template:/*ion-inline-start:"c:\Users\anton.ryhlov\cordova\git\HikAlfa1\src\pages\special\special.html"*/'<!--\n  Generated template for the SpecialPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-buttons start>\n      <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n        </button>\n    </ion-buttons>\n    <ion-title>special</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n Special\n</ion-content>\n'/*ion-inline-end:"c:\Users\anton.ryhlov\cordova\git\HikAlfa1\src\pages\special\special.html"*/,
+            selector: 'page-selectinvent',template:/*ion-inline-start:"C:\Users\anton\Documents\Dev\HikAlfa1\src\pages\selectinvent\selectinvent.html"*/'<!--\n\n  Generated template for the SelectinventPage page.\n\n\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n\n  Ionic pages and navigation.\n\n-->\n\n<ion-header>\n\n\n\n  <ion-navbar>\n\n      <ion-buttons start>\n\n        <button ion-button (click)="this.viewCtrl.dismiss()">Cancel</button>\n\n      </ion-buttons>\n\n    <ion-title>Select current inventory</ion-title>\n\n  </ion-navbar>\n\n\n\n</ion-header>\n\n\n\n\n\n<ion-content padding>\n\n    <ion-list>\n\n        <ion-card *ngFor="let item of this.invent.getInventories(); let i=index" (click)="selectInvent($event, item)"><ion-item [color]="inventSelected(item)">{{item}}</ion-item></ion-card>\n\n    </ion-list>\n\n</ion-content>\n\n'/*ion-inline-end:"C:\Users\anton\Documents\Dev\HikAlfa1\src\pages\selectinvent\selectinvent.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]])
-    ], SpecialPage);
-    return SpecialPage;
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* ViewController */], __WEBPACK_IMPORTED_MODULE_2__providers_invent_invent__["a" /* InventProvider */]])
+    ], SelectinventPage);
+    return SelectinventPage;
 }());
 
-//# sourceMappingURL=special.js.map
+//# sourceMappingURL=selectinvent.js.map
 
 /***/ })
 

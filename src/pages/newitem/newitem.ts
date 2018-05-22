@@ -22,6 +22,7 @@ export class NewitemPage {
     item: InventoryItem;
     titleText: string;
     actionButtonText: string;
+    weight: string;
     
   constructor(public navCtrl: NavController, public navParams: NavParams, public data: DataProvider, public invent: InventProvider, public app: App) {
   
@@ -30,7 +31,7 @@ export class NewitemPage {
       
       if( this.operation == 'create' ) {
           this.category = navParams.get('category');
-          this.item = new InventoryItem('','','',0);
+          this.item = new InventoryItem(0,'','',0);
           this.item.category = this.category.id;
           this.titleText = 'Create new item';
           this.actionButtonText = 'Create';
@@ -40,6 +41,7 @@ export class NewitemPage {
           this.category = navParams.get('category');
           this.titleText = 'Edit item';
           this.actionButtonText = 'Save';
+          this.weight = this.item.weight;
       }
       
   }
@@ -48,6 +50,7 @@ export class NewitemPage {
     actionButtonClicked() {
         if( this.operation == 'create' ) {
             //this.invent.createItem( this.item.name, this.item.description, this.category.id);
+            this.item.weight = parseInt(this.weight);
             this.invent.createItemByItem(this.item);
         } else if( this.operation == 'edit' ) {
             this.invent.saveItems();
