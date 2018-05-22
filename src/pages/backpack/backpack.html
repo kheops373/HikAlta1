@@ -1,0 +1,35 @@
+<!--
+  Generated template for the BackpackPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>BackPack weight: {{this.invent.totalBackpackWeight()}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+	<ion-list *ngFor="let cat of this.invent.getCategories()">
+	
+        <ion-item-divider style="font-weight: bold; font-size: 13pt; ">{{cat.name}}
+        </ion-item-divider>
+        
+
+        <ng-container *ngFor="let item of this.invent.getItems(cat)" >
+			<ion-item *ngIf="this.invent.itemIsInBackpack(item) as param" [style.background-color]="param.background">
+					<h2 [style.color]="param.color" style="font-weight:bold;" (click)="itemTapped(item, cat)">{{item.name}}</h2>
+					<p>{{item.description}} - {{item.weight}}gr ({{item.id}})</p>
+				<ion-icon item-end small [name]="param.icon" color="primary" (click)="addRemoveItem(item, param.action)"></ion-icon>
+			</ion-item>
+        </ng-container>
+		
+		
+    </ion-list>
+	
+</ion-content>

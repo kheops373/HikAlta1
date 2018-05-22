@@ -16,7 +16,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 export class TabsPage {
 
     tab1Root: any = 'InventoryPage';
-    tab2Root: any = 'Tab2Page';
+    tab2Root: any = 'BackpackPage';
     tabMRoot: any = 'NewmenuPage';
     myIndex: number;
 

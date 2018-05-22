@@ -43,8 +43,21 @@ export class InventoryItem {
     }
 }
 
+
+
+
+
+export class BackPack {
+	public items: number[] = [];
+
+}
+
+
+
+
+
 export class Settings {
-    public selectedInventory: string = 'Main';
+    public selectedInventory: string = 'Hiking';
     public lastCatId: number = 0;
     public lastItemId: number = 0;
 
@@ -58,10 +71,12 @@ export class Settings {
 
 
 
+
+
 @Injectable()
 export class InventProvider {
 
-    inventories : string[] = ["Main", "Home"];
+    inventories : string[] = ["Hiking", "Travel"];
     settings : Settings = new Settings();
     categories : Category[] = [ {'id':0, 'name':'Clothes', 'description':'...'},
                                 {'id':1, 'name':'Shelter', 'description':'...'},
@@ -69,6 +84,7 @@ export class InventProvider {
                                 {'id':3, 'name':'Cookware', 'description':'...'},
                                 {'id':4, 'name':'Tools', 'description':'...'} ];
     items : InventoryItem[] = [];
+	public backpack : BackPack = new BackPack();
 
     
   constructor(private storage: Storage) { 
@@ -98,6 +114,12 @@ export class InventProvider {
                 this.inventories = storedItems;
             };
           });
+	  
+	  /*storage.get('backpack').then((storedItems) => {
+            if( storedItems){
+                this.backpack = storedItems;
+            }
+          });*/
           
   }
 
@@ -106,6 +128,7 @@ export class InventProvider {
         this.storage.set('items', this.items);
         this.storage.set('inventories', this.inventories);
         this.storage.set('settings', this.settings);
+		this.storage.set('backpack', this.backpack);
     }
 
     saveItems() {
@@ -195,6 +218,51 @@ export class InventProvider {
         this.storage.set('items', this.items);
         this.storage.set('settings', this.settings);
     }
+
+
+
+	addItemToBackpack(item) {
+		this.backpack.items.push(item.id);
+		this.storage.set('backpack', this.backpack);
+	}
+
+	removeItemFromBackpack(item) {
+		for(var i = this.backpack.items.length - 1; i >= 0; i--) {
+            if(this.backpack.items[i] == item.id) {
+               this.backpack.items.splice(i, 1);;
+            }
+        }
+		this.storage.set('backpack', this.backpack);
+	}
+
+	itemIsInBackpack(item) {
+		for(var i = this.backpack.items.length - 1; i >= 0; i--) {
+            if(this.backpack.items[i] == item.id) {
+               return { 'color': 'green', 'icon': 'close', 'action':'remove', background: '#EEE' };
+            }
+        }
+		return { 'color': 'gray', 'icon': 'add', 'action':'add', background: '' };
+	}
+
+	boolItemIsInBackpack(item) {
+		for(var i = this.backpack.items.length - 1; i >= 0; i--) {
+            if(this.backpack.items[i] == item.id) {
+               return true;
+            }
+        }
+		return false;
+	}
+
+	totalBackpackWeight() {
+		let weight: number = 0;
+		for(var i = this.items.length - 1; i >= 0; i--) {
+            if( this.boolItemIsInBackpack(this.items[i]) ) {
+               weight = weight + this.items[i].weight;
+            }
+        }
+		
+		return weight;
+	}
   
   
     
@@ -208,8 +276,10 @@ export class InventProvider {
     eraseAllStorage() {
         this.items = [];
         this.settings = new Settings();
+		this.backpack = new BackPack();
         this.storage.set('items', this.items);
         this.storage.set('settings', this.settings);
+		this.storage.set('backpack', this.backpack);
     }
 
 

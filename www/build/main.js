@@ -21,31 +21,31 @@ webpackEmptyAsyncContext.id = 109;
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"../pages/inventory/inventory.module": [
+	"../pages/backpack/backpack.module": [
 		274,
 		7
 	],
-	"../pages/login/login.module": [
+	"../pages/inventory/inventory.module": [
 		275,
 		6
 	],
-	"../pages/newitem/newitem.module": [
+	"../pages/login/login.module": [
 		276,
 		5
 	],
-	"../pages/newmenu/newmenu.module": [
+	"../pages/newitem/newitem.module": [
 		277,
 		4
 	],
-	"../pages/selectinvent/selectinvent.module": [
+	"../pages/newmenu/newmenu.module": [
 		278,
 		3
 	],
-	"../pages/special/special.module": [
+	"../pages/selectinvent/selectinvent.module": [
 		279,
 		2
 	],
-	"../pages/tab2/tab2.module": [
+	"../pages/special/special.module": [
 		280,
 		1
 	],
@@ -76,6 +76,7 @@ module.exports = webpackAsyncContext;
 "use strict";
 /* unused harmony export Category */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return InventoryItem; });
+/* unused harmony export BackPack */
 /* unused harmony export Settings */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InventProvider; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
@@ -115,9 +116,16 @@ var InventoryItem = /** @class */ (function () {
     return InventoryItem;
 }());
 
+var BackPack = /** @class */ (function () {
+    function BackPack() {
+        this.items = [];
+    }
+    return BackPack;
+}());
+
 var Settings = /** @class */ (function () {
     function Settings() {
-        this.selectedInventory = 'Main';
+        this.selectedInventory = 'Hiking';
         this.lastCatId = 0;
         this.lastItemId = 0;
     }
@@ -134,7 +142,7 @@ var InventProvider = /** @class */ (function () {
     function InventProvider(storage) {
         var _this = this;
         this.storage = storage;
-        this.inventories = ["Main", "Home"];
+        this.inventories = ["Hiking", "Travel"];
         this.settings = new Settings();
         this.categories = [{ 'id': 0, 'name': 'Clothes', 'description': '...' },
             { 'id': 1, 'name': 'Shelter', 'description': '...' },
@@ -142,6 +150,7 @@ var InventProvider = /** @class */ (function () {
             { 'id': 3, 'name': 'Cookware', 'description': '...' },
             { 'id': 4, 'name': 'Tools', 'description': '...' }];
         this.items = [];
+        this.backpack = new BackPack();
         storage.get('settings').then(function (storedItems) {
             if (storedItems) {
                 _this.settings = storedItems;
@@ -166,12 +175,18 @@ var InventProvider = /** @class */ (function () {
             }
             ;
         });
+        /*storage.get('backpack').then((storedItems) => {
+              if( storedItems){
+                  this.backpack = storedItems;
+              }
+            });*/
     }
     InventProvider.prototype.saveAll = function () {
         this.storage.set('categories', this.categories);
         this.storage.set('items', this.items);
         this.storage.set('inventories', this.inventories);
         this.storage.set('settings', this.settings);
+        this.storage.set('backpack', this.backpack);
     };
     InventProvider.prototype.saveItems = function () {
         this.storage.set('items', this.items);
@@ -245,14 +260,54 @@ var InventProvider = /** @class */ (function () {
         this.storage.set('items', this.items);
         this.storage.set('settings', this.settings);
     };
+    InventProvider.prototype.addItemToBackpack = function (item) {
+        this.backpack.items.push(item.id);
+        this.storage.set('backpack', this.backpack);
+    };
+    InventProvider.prototype.removeItemFromBackpack = function (item) {
+        for (var i = this.backpack.items.length - 1; i >= 0; i--) {
+            if (this.backpack.items[i] == item.id) {
+                this.backpack.items.splice(i, 1);
+                ;
+            }
+        }
+        this.storage.set('backpack', this.backpack);
+    };
+    InventProvider.prototype.itemIsInBackpack = function (item) {
+        for (var i = this.backpack.items.length - 1; i >= 0; i--) {
+            if (this.backpack.items[i] == item.id) {
+                return { 'color': 'green', 'icon': 'close', 'action': 'remove', background: '#EEE' };
+            }
+        }
+        return { 'color': 'gray', 'icon': 'add', 'action': 'add', background: '' };
+    };
+    InventProvider.prototype.boolItemIsInBackpack = function (item) {
+        for (var i = this.backpack.items.length - 1; i >= 0; i--) {
+            if (this.backpack.items[i] == item.id) {
+                return true;
+            }
+        }
+        return false;
+    };
+    InventProvider.prototype.totalBackpackWeight = function () {
+        var weight = 0;
+        for (var i = this.items.length - 1; i >= 0; i--) {
+            if (this.boolItemIsInBackpack(this.items[i])) {
+                weight = weight + this.items[i].weight;
+            }
+        }
+        return weight;
+    };
     InventProvider.prototype.remove = function (i) {
         this.categories.splice(i, 1);
     };
     InventProvider.prototype.eraseAllStorage = function () {
         this.items = [];
         this.settings = new Settings();
+        this.backpack = new BackPack();
         this.storage.set('items', this.items);
         this.storage.set('settings', this.settings);
+        this.storage.set('backpack', this.backpack);
     };
     InventProvider = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
@@ -359,13 +414,13 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
                 __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["e" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* MyApp */], {}, {
                     links: [
+                        { loadChildren: '../pages/backpack/backpack.module#BackpackPageModule', name: 'BackpackPage', segment: 'backpack', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/inventory/inventory.module#InventoryPageModule', name: 'InventoryPage', segment: 'inventory', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/newitem/newitem.module#NewitemPageModule', name: 'NewitemPage', segment: 'newitem', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/newmenu/newmenu.module#NewmenuPageModule', name: 'NewmenuPage', segment: 'newmenu', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/selectinvent/selectinvent.module#SelectinventPageModule', name: 'SelectinventPage', segment: 'selectinvent', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/special/special.module#SpecialPageModule', name: 'SpecialPage', segment: 'special', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/tab2/tab2.module#Tab2PageModule', name: 'Tab2Page', segment: 'tab2', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/tabs/tabs.module#TabsPageModule', name: 'TabsPage', segment: 'tabs', priority: 'low', defaultHistory: [] }
                     ]
                 }),
@@ -426,7 +481,7 @@ var MyApp = /** @class */ (function () {
         });
     }
     MyApp = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"C:\Users\anton\Documents\Dev\HikAlfa1\src\app\app.html"*/'<ion-nav [root]="rootPage"></ion-nav>\n\n'/*ion-inline-end:"C:\Users\anton\Documents\Dev\HikAlfa1\src\app\app.html"*/
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"c:\Users\anton.ryhlov\cordova\git\HikAlfa1\src\app\app.html"*/'<ion-nav [root]="rootPage"></ion-nav>\n'/*ion-inline-end:"c:\Users\anton.ryhlov\cordova\git\HikAlfa1\src\app\app.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* Platform */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */]])
     ], MyApp);
