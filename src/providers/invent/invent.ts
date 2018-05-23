@@ -49,6 +49,10 @@ export class InventoryItem {
 
 
 export class BackPack {
+	public id:number;
+	public name:string;
+	public note:string;
+	public inventory: string;
 	public items: number[] = [];
     public totalWeight: number = 0;
 
@@ -60,15 +64,10 @@ export class BackPack {
 
 export class Settings {
     public selectedInventory: string = 'Hiking';
+	public selectedBackpack: number = 0;
     public lastCatId: number = 0;
     public lastItemId: number = 0;
-
-    validate() {
-        //if( isNaN(this.lastCatId) )
-            //this.lastCatId = 0;
-        //if( isNaN(this.lastItemId) )
-            //this.lastItemId = 0;
-    }
+	public lastBackpackId: number = 0;
 }
 
 
@@ -86,7 +85,7 @@ export class InventProvider {
                                 {'id':3, 'name':'Cookware', 'description':'...', 'show': true},
                                 {'id':4, 'name':'Tools', 'description':'...', 'show': true} ];
     items : InventoryItem[] = [];
-	public backpack : BackPack = new BackPack();
+	backpacks : BackPack[] = [];
 
     
   constructor(private storage: Storage) { 
@@ -96,8 +95,6 @@ export class InventProvider {
                 this.settings = storedItems;
             };
           });
-      
-      this.settings.validate();
       
       /*storage.get('categories').then((storedItems) => {
             if( storedItems){
@@ -117,9 +114,9 @@ export class InventProvider {
             };
           });
 	  
-	  storage.get('backpack').then((storedItems) => {
+	  storage.get('backpacks').then((storedItems) => {
             if( storedItems){
-                this.backpack = storedItems;
+                this.backpacks = storedItems;
             }
           });
           
@@ -133,7 +130,7 @@ export class InventProvider {
         this.storage.set('items', this.items);
         this.storage.set('inventories', this.inventories);
         this.storage.set('settings', this.settings);
-		this.storage.set('backpack', this.backpack);
+		this.storage.set('backpacks', this.backpacks);
     }
 
     saveItems() {
@@ -143,10 +140,9 @@ export class InventProvider {
     eraseAllStorage() {
         this.items = [];
         this.settings = new Settings();
-		this.backpack = new BackPack();
-        this.storage.remove('items');
+		this.backpacks = [];
+		this.storage.clear();
         this.storage.set('settings', this.settings);
-		this.storage.remove('backpack');
         this.inventories = ["Hiking", "Travel"]
         this.storage.set('inventories', this.inventories);
     }
@@ -255,65 +251,127 @@ export class InventProvider {
 
     /***                        B A C K P A C K                     ***/
 
-	addItemToBackpack(item) {
-		this.backpack.items.push(item.id);
-        this.backpack.totalWeight += item.weight;
-		this.storage.set('backpack', this.backpack);
+
+	createBackpack(backpack) {
+		backpack.inventory = this.settings.selectedInventory;
+		backpack.id = this.settings.lastBackpackId;
+		this.settings.lastBackpackId ++;
+		this.settings.selectedBackpack = backpack.id;
+		this.backpacks.push(backpack);
+		this.storage.set('settings', this.settings);
+		this.storage.set('backpacks', this.backpacks);
+	}
+	saveBackpack(backpack) {
+		this.storage.set('backpacks', this.backpacks);
 	}
 
-	removeItemFromBackpack(item) {
-		for(var i = this.backpack.items.length - 1; i >= 0; i--) {
-            if(this.backpack.items[i] == item.id) {
-               this.backpack.items.splice(i, 1);;
+	boolInventoryHasBackpacks() {
+		if( this.backpacks == undefined || this.backpacks.length < 1 )
+			return false;
+		for(var i=0; i<this.backpacks.length; i++ ) {
+			if( this.backpacks[i].inventory == this.settings.selectedInventory )
+				return true;
+		}
+		return false;
+	}
+	getBackpacksFromInventory() {
+		let res = []
+		for(var i=0; i<this.backpacks.length; i++ ) {
+			if( this.backpacks[i].inventory == this.settings.selectedInventory )
+				res.push( this.backpacks[i] );
+		}
+		return res;
+	}
+
+	getBackpackById(backpackId) {
+		for(var i=0; i<this.backpacks.length; i++ ) {
+			if( this.backpacks[i].inventory == this.settings.selectedInventory && this.backpacks[i].id == backpackId )
+				return this.backpacks[i];
+		}
+		return null;
+	}
+	getSelectedBackpack() {
+		for(var i=0; i<this.backpacks.length; i++ ) {
+			if( this.backpacks[i].inventory == this.settings.selectedInventory && this.backpacks[i].id == this.settings.selectedBackpack )
+				return this.backpacks[i];
+		}
+		return null;
+	}
+
+	addItemToBackpack(item, backpack) {
+		backpack.items.push(item.id);
+        backpack.totalWeight += item.weight;
+		this.storage.set('backpacks', this.backpacks);
+	}
+
+	removeItemFromBackpack(item, backpack) {
+		for(var i = backpack.items.length - 1; i >= 0; i--) {
+            if(backpack.items[i] == item.id) {
+               backpack.items.splice(i, 1);;
             }
         }
-        this.backpack.totalWeight -= item.weight;
-		this.storage.set('backpack', this.backpack);
+        backpack.totalWeight -= item.weight;
+		this.storage.set('backpacks', this.backpacks);
 	}
 
-	itemIsInBackpack(item) {
-		for(var i = this.backpack.items.length - 1; i >= 0; i--) {
-            if(this.backpack.items[i] == item.id) {
+	itemIsInBackpack(item, backpack) {
+		for(var i = backpack.items.length - 1; i >= 0; i--) {
+            if(backpack.items[i] == item.id) {
                return { 'color': 'green', 'icon': 'remove', 'action':'remove', background: '#EEE' };
             }
         }
 		return { 'color': 'gray', 'icon': 'add', 'action':'add', background: '' };
 	}
 
-	boolItemIsInBackpack(item) {
-		for(var i = this.backpack.items.length - 1; i >= 0; i--) {
-            if(this.backpack.items[i] == item.id) {
+	boolItemIsInBackpack(item, backpack) {
+		for(var i = backpack.items.length - 1; i >= 0; i--) {
+            if(backpack.items[i] == item.id) {
                return true;
             }
         }
 		return false;
 	}
 
-    calculateBackpackTotalWeight() {
-        this.backpack.totalWeight = 0;
+	boolItemIsInAnyBackpack(item) {
+		for( var j=0; j<this.backpacks.length; j++ ) {
+			for(var i = this.backpacks[j].items.length - 1; i >= 0; i--) {
+				if(this.backpacks[j].items[i] == item.id) {
+				   return true;
+				}
+			}
+		}
+		return false;
+	}
+
+    calculateBackpackTotalWeight(backpack) {
+        backpack.totalWeight = 0;
 		for(var i = this.items.length - 1; i >= 0; i--) {
-            if( this.items[i].inventory == this.settings.selectedInventory && this.boolItemIsInBackpack(this.items[i]) ) {
-               this.backpack.totalWeight += this.items[i].weight;
+            if( this.items[i].inventory == this.settings.selectedInventory && this.boolItemIsInBackpack(this.items[i], backpack) ) {
+               backpack.totalWeight += this.items[i].weight;
             }
         }
     }
 
-	totalBackpackWeight() {
+	totalBackpackWeight(backpack) {
 		let weight: number = 0;
 		for(var i = this.items.length - 1; i >= 0; i--) {
-            if( this.items[i].inventory == this.settings.selectedInventory && this.boolItemIsInBackpack(this.items[i]) ) {
+            if( this.items[i].inventory == this.settings.selectedInventory && this.boolItemIsInBackpack(this.items[i], backpack) ) {
                weight += this.items[i].weight;
             }
         }
 		
 		return weight;
 	}
+
+	countBackpackItems(backpack) {
+		return backpack.items.length;
+	}
   
 
     countBackpackItemsByCategory(backpack, category) {
         let n = 0;
         for(var i = this.items.length - 1; i >= 0; i--) {
-            if(this.items[i].inventory == this.settings.selectedInventory && this.items[i].category == category.id && this.boolItemIsInBackpack(this.items[i])) {
+            if(this.items[i].inventory == this.settings.selectedInventory && this.items[i].category == category.id && this.boolItemIsInBackpack(this.items[i], backpack)) {
                n++;
             }
         }
@@ -323,7 +381,7 @@ export class InventProvider {
     calculateBackpackWeightByCateogry(backpack, category) {
         let weight = 0;
         for(var i = this.items.length - 1; i >= 0; i--) {
-            if(this.items[i].inventory == this.settings.selectedInventory && this.items[i].category == category.id && this.boolItemIsInBackpack(this.items[i])) {
+            if(this.items[i].inventory == this.settings.selectedInventory && this.items[i].category == category.id && this.boolItemIsInBackpack(this.items[i], backpack)) {
                weight += this.items[i].weight;
             }
         }

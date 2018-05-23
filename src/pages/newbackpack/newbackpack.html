@@ -1,0 +1,39 @@
+<!--
+  Generated template for the NewbackpackPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{this.text.title}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+	<ng-container *ngIf="this.invent.boolInventoryHasBackpacks() && this.text.showlist">
+		
+		<ion-card *ngFor="let backpack of this.invent.getBackpacksFromInventory()" (click)="selectBackpack(backpack)">
+			<ion-item [color]="backpackSelected(backpack)">{{backpack.name}} - {{this.invent.countBackpackItems(backpack)}} items - {{this.invent.totalBackpackWeight(backpack)}} gr</ion-item>
+		</ion-card>
+		
+	</ng-container>
+	
+	<br />
+	<ion-item-divider>Create new backpack</ion-item-divider>
+	<ion-item>
+		<ion-label color="primary" stacked>Name</ion-label>
+		<ion-input type="text" [(ngModel)]="this.backpack.name"></ion-input>
+	</ion-item>
+    <ion-item>
+		<ion-label color="primary" stacked>Notes</ion-label>
+		<ion-input type="text" [(ngModel)]="this.backpack.notes"></ion-input>
+	</ion-item>
+	
+	<button ion-button outline block (click)="createSaveBackpackClicked()">{{this.text.button}}</button>
+	
+</ion-content>

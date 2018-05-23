@@ -1,6 +1,6 @@
 webpackJsonp([3],{
 
-/***/ 277:
+/***/ 278:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8,7 +8,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NewitemPageModule", function() { return NewitemPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(100);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__newitem__ = __webpack_require__(284);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__newitem__ = __webpack_require__(286);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -38,7 +38,7 @@ var NewitemPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 284:
+/***/ 286:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -77,7 +77,7 @@ var NewitemPage = /** @class */ (function () {
         //alert(navParams.get('category'));
         if (this.operation == 'create') {
             this.category = navParams.get('category');
-            this.item = new __WEBPACK_IMPORTED_MODULE_3__providers_invent_invent__["b" /* InventoryItem */](0, '', '', 0);
+            this.item = new __WEBPACK_IMPORTED_MODULE_3__providers_invent_invent__["c" /* InventoryItem */](0, '', '', 0);
             this.item.category = this.category.id;
             this.titleText = 'Create new item';
             this.actionButtonText = 'Create';
@@ -106,9 +106,9 @@ var NewitemPage = /** @class */ (function () {
     };
     NewitemPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-newitem',template:/*ion-inline-start:"C:\Users\anton\Documents\Dev\HikAlfa1\src\pages\newitem\newitem.html"*/'<!--\n\n  Generated template for the NewitemPage page.\n\n\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n\n  Ionic pages and navigation.\n\n-->\n\n<ion-header>\n\n\n\n    <ion-navbar>\n\n        <ion-title>{{this.titleText}}</ion-title>\n\n        <ion-buttons end>\n\n            <a style="font-size:12pt" (click)="actionButtonClicked()">{{this.actionButtonText}}</a>\n\n		</ion-buttons>\n\n    </ion-navbar>\n\n</ion-header>\n\n\n\n\n\n<ion-content padding>\n\n    <ion-item-divider><h1>In the category : {{this.category.name}}</h1></ion-item-divider>\n\n    \n\n    <ion-item>\n\n		<ion-label color="primary" stacked>Name</ion-label>\n\n		<ion-input type="text" [(ngModel)]="this.item.name"></ion-input>\n\n	</ion-item>\n\n    <!--<ion-item>\n\n		<ion-label color="primary" stacked>Type</ion-label>\n\n		<ion-input type="text" [(ngModel)]="this.item.type"></ion-input>\n\n	</ion-item>-->\n\n    <ion-item>\n\n		<ion-label color="primary" stacked>Description</ion-label>\n\n		<ion-input type="text" [(ngModel)]="this.item.description"></ion-input>\n\n	</ion-item>\n\n    <ion-item>\n\n        <ion-label color="primary" stacked>Weight (gr)</ion-label>\n\n        <ion-input type="number" [(ngModel)]="this.weight"></ion-input>\n\n    </ion-item>\n\n    \n\n    <!--<button ion-button outline (click)="actionButtonClicked()">{{this.actionButtonText}}</button>-->\n\n    \n\n</ion-content>\n\n'/*ion-inline-end:"C:\Users\anton\Documents\Dev\HikAlfa1\src\pages\newitem\newitem.html"*/,
+            selector: 'page-newitem',template:/*ion-inline-start:"c:\Users\anton.ryhlov\cordova\git\HikAlfa1\src\pages\newitem\newitem.html"*/'<!--\n\n  Generated template for the NewitemPage page.\n\n\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n\n  Ionic pages and navigation.\n\n-->\n\n<ion-header>\n\n\n\n    <ion-navbar>\n\n        <ion-title>{{this.titleText}}</ion-title>\n\n        <ion-buttons end>\n\n            <a style="font-size:12pt" (click)="actionButtonClicked()">{{this.actionButtonText}}</a>\n\n		</ion-buttons>\n\n    </ion-navbar>\n\n</ion-header>\n\n\n\n\n\n<ion-content padding>\n\n    <ion-item-divider><h1>In the category : {{this.category.name}}</h1></ion-item-divider>\n\n    \n\n    <ion-item>\n\n		<ion-label color="primary" stacked>Name</ion-label>\n\n		<ion-input type="text" [(ngModel)]="this.item.name"></ion-input>\n\n	</ion-item>\n\n    <!--<ion-item>\n\n		<ion-label color="primary" stacked>Type</ion-label>\n\n		<ion-input type="text" [(ngModel)]="this.item.type"></ion-input>\n\n	</ion-item>-->\n\n    <ion-item>\n\n		<ion-label color="primary" stacked>Description</ion-label>\n\n		<ion-input type="text" [(ngModel)]="this.item.description"></ion-input>\n\n	</ion-item>\n\n    <ion-item>\n\n        <ion-label color="primary" stacked>Weight (gr)</ion-label>\n\n        <ion-input type="number" [(ngModel)]="this.weight"></ion-input>\n\n    </ion-item>\n\n    \n\n    <!--<button ion-button outline (click)="actionButtonClicked()">{{this.actionButtonText}}</button>-->\n\n    \n\n</ion-content>\n\n'/*ion-inline-end:"c:\Users\anton.ryhlov\cordova\git\HikAlfa1\src\pages\newitem\newitem.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__providers_data_data__["a" /* DataProvider */], __WEBPACK_IMPORTED_MODULE_3__providers_invent_invent__["a" /* InventProvider */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* App */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__providers_data_data__["a" /* DataProvider */], __WEBPACK_IMPORTED_MODULE_3__providers_invent_invent__["b" /* InventProvider */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* App */]])
     ], NewitemPage);
     return NewitemPage;
 }());

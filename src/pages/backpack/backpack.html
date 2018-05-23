@@ -7,35 +7,55 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>BackPack</ion-title>
+	  <ion-title>Backpack</ion-title>
+	  <ion-buttons end>
+		  <button ion-button icon-only (click)="this.app.getRootNav().push('NewbackpackPage', {'backpack':null})">
+			  <ion-icon name="list"></ion-icon>
+		  </button>
+	  </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-    
-    <ion-item-divider><h1>Total weight: {{this.invent.backpack.totalWeight}} gr</h1></ion-item-divider>
-
-	<ion-list *ngFor="let cat of this.invent.getCategories()">
 	
-        <ion-list-header style="font-weight: bold; font-size: 12pt; ">
-            <ion-icon item-start small [name]="cat.show ? 'arrow-dropdown' : 'arrow-dropright'" (click)="cat.show = cat.show ? false : true"></ion-icon>
-            {{cat.name}} ({{this.invent.countBackpackItemsByCategory('', cat)}}/{{this.invent.countItemsByCategory(cat)}}) - {{this.invent.calculateBackpackWeightByCateogry('', cat)}} gr
-        </ion-list-header>
-        
+	<ng-container  *ngIf="this.invent.boolInventoryHasBackpacks() && this.invent.getSelectedBackpack() as backpack">
+	
+		<ion-item-divider>
+			<h1>
+				{{backpack.name}} <span style="font-size: 13pt"> - {{backpack.totalWeight}} gr</span>
+			</h1>
+			<ion-icon name="create" item-end (click)="this.app.getRootNav().push('NewbackpackPage', {'backpack':backpack})"></ion-icon>
+		</ion-item-divider>	
 
-        <ng-container *ngIf="cat.show">
-            <ng-container *ngFor="let item of this.invent.getItems(cat)" >
-                <ion-item *ngIf="this.invent.itemIsInBackpack(item) as param" [style.background-color]="param.background">
-                        <h2 [style.color]="param.color" style="font-weight:bold;" (click)="itemTapped(item, cat)">{{item.name}}</h2>
-                        <p>{{item.description}} - {{item.weight}} gr</p>
-                    <ion-icon item-end  [name]="param.icon" color="primary" (click)="addRemoveItem(item, param.action)"></ion-icon>
-                </ion-item>
-            </ng-container>
-        </ng-container>
+		<ion-list *ngFor="let cat of this.invent.getCategories()">
+
+			<ion-list-header style="font-weight: bold; font-size: 12pt; ">
+				<ion-icon item-start small [name]="cat.show ? 'arrow-dropdown' : 'arrow-dropright'" (click)="cat.show = cat.show ? false : true"></ion-icon>
+				{{cat.name}} ({{this.invent.countBackpackItemsByCategory(backpack, cat)}}/{{this.invent.countItemsByCategory(cat)}}) - {{this.invent.calculateBackpackWeightByCateogry(backpack, cat)}} gr
+			</ion-list-header>
+
+
+			<ng-container *ngIf="cat.show">
+				<ng-container *ngFor="let item of this.invent.getItems(cat)" >
+					<ion-item *ngIf="this.invent.itemIsInBackpack(item, backpack) as param" [style.background-color]="param.background">
+							<h2 [style.color]="param.color" style="font-weight:bold;" (click)="itemTapped(item, cat)">{{item.name}}</h2>
+							<p>{{item.description}} - {{item.weight}} gr</p>
+						<ion-icon item-end  [name]="param.icon" color="primary" (click)="addRemoveItem(item, backpack, param.action)"></ion-icon>
+					</ion-item>
+				</ng-container>
+			</ng-container>
+
+
+		</ion-list>
 		
-		
-    </ion-list>
+	</ng-container>
+	
+	<ng-container *ngIf=" !this.invent.boolInventoryHasBackpacks()">
+		<h1>No backpacks created</h1>
+		<br />
+		<button ion-button block outline (click)="this.app.getRootNav().push('NewbackpackPage')">Create first backpack</button>
+	</ng-container>
 	
 </ion-content>

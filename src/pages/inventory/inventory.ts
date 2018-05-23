@@ -38,7 +38,7 @@ export class InventoryPage {
 	removeItem(event, item)
 	{
         
-        if( this.invent.boolItemIsInBackpack(item) ) {
+        if( this.invent.boolItemIsInAnyBackpack(item) ) {
             alert("Item is part of a backpack and cannot be removed!");
         } else {
             let al = this.alertCtrl.create({

@@ -1,14 +1,14 @@
 webpackJsonp([4],{
 
-/***/ 276:
+/***/ 277:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoginPageModule", function() { return LoginPageModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NewbackpackPageModule", function() { return NewbackpackPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(100);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__login__ = __webpack_require__(283);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__newbackpack__ = __webpack_require__(285);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,33 +18,34 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var LoginPageModule = /** @class */ (function () {
-    function LoginPageModule() {
+var NewbackpackPageModule = /** @class */ (function () {
+    function NewbackpackPageModule() {
     }
-    LoginPageModule = __decorate([
+    NewbackpackPageModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__login__["a" /* LoginPage */],
+                __WEBPACK_IMPORTED_MODULE_2__newbackpack__["a" /* NewbackpackPage */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__login__["a" /* LoginPage */]),
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__newbackpack__["a" /* NewbackpackPage */]),
             ],
         })
-    ], LoginPageModule);
-    return LoginPageModule;
+    ], NewbackpackPageModule);
+    return NewbackpackPageModule;
 }());
 
-//# sourceMappingURL=login.module.js.map
+//# sourceMappingURL=newbackpack.module.js.map
 
 /***/ }),
 
-/***/ 283:
+/***/ 285:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoginPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NewbackpackPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_invent_invent__ = __webpack_require__(194);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -56,33 +57,62 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
 /**
- * Generated class for the LoginPage page.
+ * Generated class for the NewbackpackPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-var LoginPage = /** @class */ (function () {
-    function LoginPage(navCtrl, navParams) {
+var NewbackpackPage = /** @class */ (function () {
+    function NewbackpackPage(app, navCtrl, navParams, invent) {
+        this.app = app;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
+        this.invent = invent;
+        this.text = { 'title': 'Select backpack', 'button': 'Create', 'showlist': true, 'action': 'create' };
+        this.backpack = navParams.get('backpack');
+        if (this.backpack == null) {
+            this.backpack = new __WEBPACK_IMPORTED_MODULE_2__providers_invent_invent__["a" /* BackPack */]();
+        }
+        else {
+            this.text.title = 'Edit backpack';
+            this.text.button = 'Save changes';
+            this.text.showlist = false;
+            this.text.action = 'save';
+        }
     }
-    LoginPage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad LoginPage');
+    NewbackpackPage.prototype.createSaveBackpackClicked = function () {
+        if (this.text.action == 'create') {
+            this.invent.createBackpack(this.backpack);
+            this.app.getRootNav().pop();
+        }
+        else if (this.text.action == 'save') {
+            this.invent.saveBackpack(this.backpack);
+            this.app.getRootNav().pop();
+        }
     };
-    LoginPage.prototype.doLogin = function () {
-        this.navCtrl.setRoot('TabsPage');
+    NewbackpackPage.prototype.backpackSelected = function (backpack) {
+        if (backpack.id == this.invent.settings.selectedBackpack)
+            return 'primary';
+        else
+            return '';
     };
-    LoginPage = __decorate([
+    NewbackpackPage.prototype.selectBackpack = function (backpack) {
+        this.invent.settings.selectedBackpack = backpack.id;
+        this.app.getRootNav().pop();
+    };
+    NewbackpackPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-login',template:/*ion-inline-start:"C:\Users\anton\Documents\Dev\HikAlfa1\src\pages\login\login.html"*/'<!--\n\n  Generated template for the LoginPage page.\n\n\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n\n  Ionic pages and navigation.\n\n-->\n\n<ion-header>\n\n\n\n  <ion-navbar>\n\n    <ion-title>Login</ion-title>\n\n  </ion-navbar>\n\n\n\n</ion-header>\n\n\n\n\n\n<ion-content padding>\n\n    <button ion-button full (click)="doLogin()">Login</button>\n\n</ion-content>\n\n'/*ion-inline-end:"C:\Users\anton\Documents\Dev\HikAlfa1\src\pages\login\login.html"*/,
+            selector: 'page-newbackpack',template:/*ion-inline-start:"c:\Users\anton.ryhlov\cordova\git\HikAlfa1\src\pages\newbackpack\newbackpack.html"*/'<!--\n  Generated template for the NewbackpackPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>{{this.text.title}}</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n\n	<ng-container *ngIf="this.invent.boolInventoryHasBackpacks() && this.text.showlist">\n		\n		<ion-card *ngFor="let backpack of this.invent.getBackpacksFromInventory()" (click)="selectBackpack(backpack)">\n			<ion-item [color]="backpackSelected(backpack)">{{backpack.name}} - {{this.invent.countBackpackItems(backpack)}} items - {{this.invent.totalBackpackWeight(backpack)}} gr</ion-item>\n		</ion-card>\n		\n	</ng-container>\n	\n	<br />\n	<ion-item-divider>Create new backpack</ion-item-divider>\n	<ion-item>\n		<ion-label color="primary" stacked>Name</ion-label>\n		<ion-input type="text" [(ngModel)]="this.backpack.name"></ion-input>\n	</ion-item>\n    <ion-item>\n		<ion-label color="primary" stacked>Notes</ion-label>\n		<ion-input type="text" [(ngModel)]="this.backpack.notes"></ion-input>\n	</ion-item>\n	\n	<button ion-button outline block (click)="createSaveBackpackClicked()">{{this.text.button}}</button>\n	\n</ion-content>\n'/*ion-inline-end:"c:\Users\anton.ryhlov\cordova\git\HikAlfa1\src\pages\newbackpack\newbackpack.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]])
-    ], LoginPage);
-    return LoginPage;
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* App */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* App */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__providers_invent_invent__["b" /* InventProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_invent_invent__["b" /* InventProvider */]) === "function" && _d || Object])
+    ], NewbackpackPage);
+    return NewbackpackPage;
+    var _a, _b, _c, _d;
 }());
 
-//# sourceMappingURL=login.js.map
+//# sourceMappingURL=newbackpack.js.map
 
 /***/ })
 

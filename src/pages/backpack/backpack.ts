@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { InventProvider, InventoryItem } from '../../providers/invent/invent';
+import { IonicPage, NavController, NavParams, App } from 'ionic-angular';
+import { InventProvider, InventoryItem, BackPack } from '../../providers/invent/invent';
 
 /**
  * Generated class for the BackpackPage page.
@@ -15,20 +15,27 @@ import { InventProvider, InventoryItem } from '../../providers/invent/invent';
   templateUrl: 'backpack.html',
 })
 export class BackpackPage {
-
-  constructor(public navCtrl: NavController, public navParams: NavParams, public invent: InventProvider) {
-  }
 	
-	addRemoveItem(item, action) {
+
+
+	constructor(public app: App, public navCtrl: NavController, public navParams: NavParams, public invent: InventProvider) {
+
+	}
+	
+	addRemoveItem(item, backpack, action) {
 		if( action == 'add' ) {
-			this.invent.addItemToBackpack(item);
+			this.invent.addItemToBackpack(item, backpack);
 		} else if( action == 'remove' ) {
-			this.invent.removeItemFromBackpack(item);
+			this.invent.removeItemFromBackpack(item, backpack);
 		}
 	}
     
     ionViewWillEnter() {
-        this.invent.calculateBackpackTotalWeight();
+		if( this.invent.boolInventoryHasBackpacks() ) {	
+			
+		}
+		else
+			this.app.getRootNav().push('NewbackpackPage');
     }
 
 }
