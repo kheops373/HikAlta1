@@ -42,6 +42,7 @@ var NewbackpackPageModule = /** @class */ (function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* unused harmony export Pram */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NewbackpackPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(100);
@@ -64,6 +65,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
+var Pram = /** @class */ (function () {
+    function Pram() {
+    }
+    return Pram;
+}());
+
 var NewbackpackPage = /** @class */ (function () {
     function NewbackpackPage(app, navCtrl, navParams, invent) {
         this.app = app;
@@ -99,12 +106,12 @@ var NewbackpackPage = /** @class */ (function () {
             return '';
     };
     NewbackpackPage.prototype.selectBackpack = function (backpack) {
-        this.invent.settings.selectedBackpack = backpack.id;
+        this.invent.selectBackpack(backpack);
         this.app.getRootNav().pop();
     };
     NewbackpackPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-newbackpack',template:/*ion-inline-start:"c:\Users\anton.ryhlov\cordova\git\HikAlfa1\src\pages\newbackpack\newbackpack.html"*/'<!--\n  Generated template for the NewbackpackPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>{{this.text.title}}</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n\n	<ng-container *ngIf="this.invent.boolInventoryHasBackpacks() && this.text.showlist">\n		\n		<ion-card *ngFor="let backpack of this.invent.getBackpacksFromInventory()" (click)="selectBackpack(backpack)">\n			<ion-item [color]="backpackSelected(backpack)">{{backpack.name}} - {{this.invent.countBackpackItems(backpack)}} items - {{this.invent.totalBackpackWeight(backpack)}} gr</ion-item>\n		</ion-card>\n		\n	</ng-container>\n	\n	<br />\n	<ion-item-divider>Create new backpack</ion-item-divider>\n	<ion-item>\n		<ion-label color="primary" stacked>Name</ion-label>\n		<ion-input type="text" [(ngModel)]="this.backpack.name"></ion-input>\n	</ion-item>\n    <ion-item>\n		<ion-label color="primary" stacked>Notes</ion-label>\n		<ion-input type="text" [(ngModel)]="this.backpack.notes"></ion-input>\n	</ion-item>\n	\n	<button ion-button outline block (click)="createSaveBackpackClicked()">{{this.text.button}}</button>\n	\n</ion-content>\n'/*ion-inline-end:"c:\Users\anton.ryhlov\cordova\git\HikAlfa1\src\pages\newbackpack\newbackpack.html"*/,
+            selector: 'page-newbackpack',template:/*ion-inline-start:"c:\Users\anton.ryhlov\cordova\git\HikAlfa1\src\pages\newbackpack\newbackpack.html"*/'<!--\n  Generated template for the NewbackpackPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>{{this.text.title}}</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n\n	<ng-container *ngIf="this.invent.boolInventoryHasBackpacks() && this.text.showlist">\n		\n		<ion-card *ngFor="let backpack of this.invent.getBackpacksFromInventory()" (click)="selectBackpack(backpack)">\n			<ion-item [color]="backpackSelected(backpack)">{{backpack.name}} - {{this.invent.countBackpackItems(backpack)}} items - {{this.invent.totalBackpackWeight(backpack)}} gr</ion-item>\n		</ion-card>\n		\n	</ng-container>\n	\n	<br />\n	<ion-item-divider *ngIf="this.text.showlist">Create new backpack</ion-item-divider>\n	<ion-item>\n		<ion-label color="primary" stacked>Name</ion-label>\n		<ion-input type="text" [(ngModel)]="this.backpack.name"></ion-input>\n	</ion-item>\n    <ion-item>\n		<ion-label color="primary" stacked>Notes</ion-label>\n		<ion-input type="text" [(ngModel)]="this.backpack.notes"></ion-input>\n	</ion-item>\n	\n	<button ion-button outline block (click)="createSaveBackpackClicked()">{{this.text.button}}</button>\n	\n</ion-content>\n'/*ion-inline-end:"c:\Users\anton.ryhlov\cordova\git\HikAlfa1\src\pages\newbackpack\newbackpack.html"*/,
         }),
         __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* App */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* App */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__providers_invent_invent__["b" /* InventProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_invent_invent__["b" /* InventProvider */]) === "function" && _d || Object])
     ], NewbackpackPage);

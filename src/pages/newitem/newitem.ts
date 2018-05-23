@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, App } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, App, AlertController } from 'ionic-angular';
 import { DataProvider } from '../../providers/data/data';
 import { InventProvider, Category, InventoryItem } from '../../providers/invent/invent';
 
@@ -23,8 +23,9 @@ export class NewitemPage {
     titleText: string;
     actionButtonText: string;
     weight: string;
+	weightType: string;
     
-  constructor(public navCtrl: NavController, public navParams: NavParams, public data: DataProvider, public invent: InventProvider, public app: App) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public data: DataProvider, public invent: InventProvider, public app: App, public alertCtrl: AlertController) {
   
       this.operation = navParams.get('operation');
       //alert(navParams.get('category'));
@@ -60,5 +61,37 @@ export class NewitemPage {
         // ADJUST CATEGORY !!!
         this.app.getRootNav().pop();
     }
+
+
+
+	removeItem(item)
+	{
+        
+        if( this.invent.boolItemIsInAnyBackpack(item) ) {
+            alert("Item is part of a backpack and cannot be removed!");
+        } else {
+            let al = this.alertCtrl.create({
+                title: 'Remove item',
+                message: 'Are you sure you want to remove the item '+item.name+'?',
+                buttons: [
+                  {
+                    text: 'Cancel',
+                    role: 'cancel',
+                    handler: () => {
+                      console.log('Cancel clicked');
+                    }
+                  },
+                  {
+                    text: 'Confirm',
+                    handler: () => {
+                        this.invent.removeItemById(item.id);
+						this.app.getRootNav().pop();
+                    }
+                  }
+                ]
+              });
+            al.present();
+        }
+	}
 
 }

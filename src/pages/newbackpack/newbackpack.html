@@ -24,7 +24,7 @@
 	</ng-container>
 	
 	<br />
-	<ion-item-divider>Create new backpack</ion-item-divider>
+	<ion-item-divider *ngIf="this.text.showlist">Create new backpack</ion-item-divider>
 	<ion-item>
 		<ion-label color="primary" stacked>Name</ion-label>
 		<ion-input type="text" [(ngModel)]="this.backpack.name"></ion-input>

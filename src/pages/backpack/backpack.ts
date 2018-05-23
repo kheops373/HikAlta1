@@ -22,6 +22,14 @@ export class BackpackPage {
 
 	}
 	
+	newItemToCategory(category) {
+        this.app.getRootNav().push('NewitemPage', { 'operation': 'create', 'category': category });
+    }
+  
+	itemTapped(item, category) {
+        this.app.getRootNav().push('NewitemPage', { 'operation': 'edit', 'item': item, 'category': category } )
+	}
+	
 	addRemoveItem(item, backpack, action) {
 		if( action == 'add' ) {
 			this.invent.addItemToBackpack(item, backpack);
@@ -30,12 +38,12 @@ export class BackpackPage {
 		}
 	}
     
-    ionViewWillEnter() {
+    /*ionViewWillEnter() {
 		if( this.invent.boolInventoryHasBackpacks() ) {	
 			
 		}
 		else
 			this.app.getRootNav().push('NewbackpackPage');
-    }
+    }*/
 
 }

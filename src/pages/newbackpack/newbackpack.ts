@@ -9,6 +9,13 @@ import { InventProvider, InventoryItem, BackPack } from '../../providers/invent/
  * Ionic pages and navigation.
  */
 
+export class Pram {
+	public title: string;
+	public button: string;
+	public showlist: boolean;
+	public action: string;
+}
+
 @IonicPage()
 @Component({
   selector: 'page-newbackpack',
@@ -17,7 +24,7 @@ import { InventProvider, InventoryItem, BackPack } from '../../providers/invent/
 export class NewbackpackPage {
 	
 	public backpack: BackPack;
-	public text: {} = { 'title':'Select backpack', 'button':'Create', 'showlist':true, 'action':'create' };
+	public text: Pram = { 'title':'Select backpack', 'button':'Create', 'showlist':true, 'action':'create' };
 
   constructor(public app: App, public navCtrl: NavController, public navParams: NavParams, public invent: InventProvider) {
 	  this.backpack = navParams.get('backpack');
@@ -54,7 +61,7 @@ export class NewbackpackPage {
 	}
 
 	selectBackpack(backpack) {
-		this.invent.settings.selectedBackpack = backpack.id;
+		this.invent.selectBackpack(backpack);
 		this.app.getRootNav().pop();
 	}
 

@@ -291,6 +291,10 @@ var InventProvider = /** @class */ (function () {
     InventProvider.prototype.saveBackpack = function (backpack) {
         this.storage.set('backpacks', this.backpacks);
     };
+    InventProvider.prototype.selectBackpack = function (backpack) {
+        this.settings.selectedBackpack = backpack.id;
+        this.storage.set('settings', this.settings);
+    };
     InventProvider.prototype.boolInventoryHasBackpacks = function () {
         if (this.backpacks == undefined || this.backpacks.length < 1)
             return false;
@@ -403,9 +407,10 @@ var InventProvider = /** @class */ (function () {
     };
     InventProvider = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__ionic_storage__["b" /* Storage */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__ionic_storage__["b" /* Storage */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__ionic_storage__["b" /* Storage */]) === "function" && _a || Object])
     ], InventProvider);
     return InventProvider;
+    var _a;
 }());
 
 //# sourceMappingURL=invent.js.map

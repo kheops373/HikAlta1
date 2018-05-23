@@ -22,28 +22,38 @@
 	
 	<ng-container  *ngIf="this.invent.boolInventoryHasBackpacks() && this.invent.getSelectedBackpack() as backpack">
 	
-		<ion-item-divider>
-			<h1>
-				{{backpack.name}} <span style="font-size: 13pt"> - {{backpack.totalWeight}} gr</span>
-			</h1>
-			<ion-icon name="create" item-end (click)="this.app.getRootNav().push('NewbackpackPage', {'backpack':backpack})"></ion-icon>
-		</ion-item-divider>	
+		<ion-card>
+			<ion-item no-lines>
+				<h1>{{backpack.name}}</h1><ion-icon name="create" item-end (click)="this.app.getRootNav().push('NewbackpackPage', {'backpack':backpack})"></ion-icon>
+				</ion-item>
+			<ion-item no-lines>
+				<p style="font-size: 13pt">{{this.invent.countBackpackItems(backpack)}} items - {{backpack.totalWeight}} gr</p>
+			</ion-item>
+		</ion-card>	
 
 		<ion-list *ngFor="let cat of this.invent.getCategories()">
 
-			<ion-list-header style="font-weight: bold; font-size: 12pt; ">
+			<ion-list-header style="font-weight: bold; font-size: 11pt; ">
 				<ion-icon item-start small [name]="cat.show ? 'arrow-dropdown' : 'arrow-dropright'" (click)="cat.show = cat.show ? false : true"></ion-icon>
 				{{cat.name}} ({{this.invent.countBackpackItemsByCategory(backpack, cat)}}/{{this.invent.countItemsByCategory(cat)}}) - {{this.invent.calculateBackpackWeightByCateogry(backpack, cat)}} gr
+				<button ion-button item-end small round outline (click)="newItemToCategory(cat)"><ion-icon name="add"></ion-icon></button>
 			</ion-list-header>
 
 
 			<ng-container *ngIf="cat.show">
 				<ng-container *ngFor="let item of this.invent.getItems(cat)" >
-					<ion-item *ngIf="this.invent.itemIsInBackpack(item, backpack) as param" [style.background-color]="param.background">
-							<h2 [style.color]="param.color" style="font-weight:bold;" (click)="itemTapped(item, cat)">{{item.name}}</h2>
-							<p>{{item.description}} - {{item.weight}} gr</p>
-						<ion-icon item-end  [name]="param.icon" color="primary" (click)="addRemoveItem(item, backpack, param.action)"></ion-icon>
-					</ion-item>
+					<ion-item-sliding *ngIf="this.invent.itemIsInBackpack(item, backpack) as param">
+					
+						<ion-item [style.background-color]="param.background" (click)="itemTapped(item, cat)">
+								<h2 [style.color]="param.color" style="font-weight:bold;" >{{item.name}}</h2>
+								<p>{{item.description}} - {{item.weight}} gr</p>
+							<!--<ion-icon item-end  [name]="param.icon" color="primary" (click)="addRemoveItem(item, backpack, param.action)"></ion-icon>-->
+						</ion-item>
+						
+						<ion-item-options side="left" (ionSwipe)="addRemoveItem(item, backpack, param.action)">
+						</ion-item-options>
+					
+					</ion-item-sliding>
 				</ng-container>
 			</ng-container>
 

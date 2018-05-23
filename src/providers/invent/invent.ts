@@ -35,6 +35,7 @@ export class InventoryItem {
     public weight: number;
     public quantity: number;
     public type: string;
+	public weightType: string;
 
     constructor(id, name, inventory, category) {
         this.id = id;
@@ -263,6 +264,10 @@ export class InventProvider {
 	}
 	saveBackpack(backpack) {
 		this.storage.set('backpacks', this.backpacks);
+	}
+	selectBackpack(backpack) {
+		this.settings.selectedBackpack = backpack.id;
+		this.storage.set('settings', this.settings)
 	}
 
 	boolInventoryHasBackpacks() {

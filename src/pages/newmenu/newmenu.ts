@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
 import { InventProvider } from '../../providers/invent/invent';
 
 /**
@@ -16,8 +16,14 @@ import { InventProvider } from '../../providers/invent/invent';
 })
 export class NewmenuPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public invent: InventProvider, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public invent: InventProvider, public alertCtrl: AlertController, public modalCtrl: ModalController) {
   }
+	
+	
+	selectInventory() {
+		let selectInv = this.modalCtrl.create('SelectinventPage' );
+        selectInv.present();
+	}
 
 
     eraseStorage() {

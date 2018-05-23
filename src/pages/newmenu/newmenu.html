@@ -14,8 +14,17 @@
 
 
 <ion-content padding>
-    <ion-list>
+    
+	<ion-list>
+		<ion-list-header>Inventory</ion-list-header>
+		<button ion-item detail-none (click)="selectInventory()">Select Inventory</button>
+	</ion-list>
+	
+	
+	<ion-list>
         <ion-list-header>Storage</ion-list-header>
         <button ion-item detail-none (click)="eraseStorage()">Erase storage</button>
     </ion-list>
+	
+
 </ion-content>
