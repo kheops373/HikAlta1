@@ -24,14 +24,20 @@ export class Pram {
 export class NewbackpackPage {
 	
 	public backpack: BackPack;
+	public storedBackpack: BackPack;
 	public text: Pram = { 'title':'Select backpack', 'button':'Create', 'showlist':true, 'action':'create' };
 
   constructor(public app: App, public navCtrl: NavController, public navParams: NavParams, public invent: InventProvider) {
-	  this.backpack = navParams.get('backpack');
-	  if( this.backpack == null ) {
-		  this.backpack = new BackPack();
-	  }
-	  else {
+	  this.backpack = new BackPack();
+	  this.storedBackpack = navParams.get('backpack');
+	  
+	  if( this.storedBackpack != null ) {
+		  /////////////////////////////////////////////////////////////// REPLACE BY CLONE FUNCTION
+		  
+		  this.backpack.name = this.storedBackpack.name;
+		  this.backpack.note = this.storedBackpack.note;
+		  
+		  
 		  this.text.title = 'Edit backpack';
 		  this.text.button = 'Save changes';
 		  this.text.showlist = false;
@@ -47,7 +53,9 @@ export class NewbackpackPage {
 			this.app.getRootNav().pop();
 		}
 		else if( this.text.action == 'save' ) {
-			this.invent.saveBackpack(this.backpack);
+			this.storedBackpack.name = this.backpack.name;
+			this.storedBackpack.note = this.backpack.note;
+			this.invent.saveBackpack(this.storedBackpack);
 			this.app.getRootNav().pop();
 		}
 	}

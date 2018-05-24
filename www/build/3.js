@@ -1,6 +1,6 @@
 webpackJsonp([3],{
 
-/***/ 278:
+/***/ 279:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8,7 +8,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NewitemPageModule", function() { return NewitemPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(100);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__newitem__ = __webpack_require__(286);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__newitem__ = __webpack_require__(288);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -38,7 +38,7 @@ var NewitemPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 286:
+/***/ 288:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -67,24 +67,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Ionic pages and navigation.
  */
 var NewitemPage = /** @class */ (function () {
-    function NewitemPage(navCtrl, navParams, data, invent, app, alertCtrl) {
+    function NewitemPage(navCtrl, navParams, data, invent, app, alertCtrl, toastCtrl) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.data = data;
         this.invent = invent;
         this.app = app;
         this.alertCtrl = alertCtrl;
+        this.toastCtrl = toastCtrl;
         this.operation = navParams.get('operation');
-        //alert(navParams.get('category'));
+        this.storedItem = navParams.get('item');
+        this.item = new __WEBPACK_IMPORTED_MODULE_3__providers_invent_invent__["c" /* InventoryItem */]();
         if (this.operation == 'create') {
             this.category = navParams.get('category');
-            this.item = new __WEBPACK_IMPORTED_MODULE_3__providers_invent_invent__["c" /* InventoryItem */](0, '', '', 0);
             this.item.category = this.category.id;
             this.titleText = 'Create new item';
             this.actionButtonText = 'Create';
         }
         else if (this.operation == 'edit') {
-            this.item = navParams.get('item');
+            this.invent.cloneItem(this.storedItem, this.item);
             this.category = navParams.get('category');
             this.titleText = 'Edit item';
             this.actionButtonText = 'Save';
@@ -94,12 +95,13 @@ var NewitemPage = /** @class */ (function () {
     NewitemPage.prototype.actionButtonClicked = function () {
         if (this.operation == 'create') {
             //this.invent.createItem( this.item.name, this.item.description, this.category.id);
-            this.item.weight = parseInt(this.weight);
+            this.item.weight = (isNaN(parseInt(this.weight)) ? 0 : parseInt(this.weight));
             this.invent.createItemByItem(this.item);
             this.category.show = true;
         }
         else if (this.operation == 'edit') {
-            this.item.weight = parseInt(this.weight);
+            this.invent.cloneItem(this.item, this.storedItem);
+            this.storedItem.weight = (this.weight == '' ? 0 : parseInt(this.weight));
             this.invent.saveItems();
         }
         // ADJUST CATEGORY !!!
@@ -108,7 +110,12 @@ var NewitemPage = /** @class */ (function () {
     NewitemPage.prototype.removeItem = function (item) {
         var _this = this;
         if (this.invent.boolItemIsInAnyBackpack(item)) {
-            alert("Item is part of a backpack and cannot be removed!");
+            var toast = this.toastCtrl.create({
+                message: 'Item is part of a backpack and cannot be removed!',
+                duration: 2000,
+                position: 'bottom'
+            });
+            toast.present();
         }
         else {
             var al = this.alertCtrl.create({
@@ -126,6 +133,12 @@ var NewitemPage = /** @class */ (function () {
                         text: 'Confirm',
                         handler: function () {
                             _this.invent.removeItemById(item.id);
+                            var toast = _this.toastCtrl.create({
+                                message: 'Item deleted',
+                                duration: 2500,
+                                position: 'top'
+                            });
+                            toast.present();
                             _this.app.getRootNav().pop();
                         }
                     }
@@ -136,12 +149,12 @@ var NewitemPage = /** @class */ (function () {
     };
     NewitemPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-newitem',template:/*ion-inline-start:"c:\Users\anton.ryhlov\cordova\git\HikAlfa1\src\pages\newitem\newitem.html"*/'<!--\n\n  Generated template for the NewitemPage page.\n\n\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n\n  Ionic pages and navigation.\n\n-->\n\n<ion-header>\n\n\n\n    <ion-navbar>\n\n        <ion-title>{{this.titleText}}</ion-title>\n\n        <ion-buttons end>\n\n            <a style="font-size:12pt" (click)="actionButtonClicked()">{{this.actionButtonText}}</a>\n\n		</ion-buttons>\n\n    </ion-navbar>\n\n</ion-header>\n\n\n\n\n\n<ion-content padding>\n\n    <ion-item-divider><h1>In the category : {{this.category.name}}</h1></ion-item-divider>\n\n    \n\n    <ion-item>\n\n		<ion-label color="primary" stacked>Name</ion-label>\n\n		<ion-input type="text" [(ngModel)]="this.item.name"></ion-input>\n\n	</ion-item>\n\n    <!--<ion-item>\n\n		<ion-label color="primary" stacked>Type</ion-label>\n\n		<ion-input type="text" [(ngModel)]="this.item.type"></ion-input>\n\n	</ion-item>-->\n\n    <ion-item>\n\n		<ion-label color="primary" stacked>Description</ion-label>\n\n		<ion-input type="text" [(ngModel)]="this.item.description"></ion-input>\n\n	</ion-item>\n\n    <ion-item>\n\n        <ion-label color="primary" stacked>Weight (gr)</ion-label>\n\n        <ion-input type="number" [(ngModel)]="this.weight"></ion-input>\n\n    </ion-item>\n\n	\n\n	<ion-segment [(ngModel)]="this.item.weightType" color="primary">\n\n		<ion-segment-button value="worn">\n\n			Worn\n\n		</ion-segment-button>\n\n		<ion-segment-button value="base">\n\n			Base\n\n		</ion-segment-button>\n\n		<ion-segment-button value="consumable">\n\n			Consumable\n\n		</ion-segment-button>\n\n	</ion-segment>\n\n    \n\n    <!--<button ion-button outline (click)="actionButtonClicked()">{{this.actionButtonText}}</button>-->\n\n	\n\n	<br />\n\n	<br />\n\n	<button ion-button *ngIf="this.operation == \'edit\'" block color="danger" (click)="removeItem(this.item)">Delete item</button>\n\n    \n\n</ion-content>\n\n'/*ion-inline-end:"c:\Users\anton.ryhlov\cordova\git\HikAlfa1\src\pages\newitem\newitem.html"*/,
+            selector: 'page-newitem',template:/*ion-inline-start:"c:\Users\anton.ryhlov\cordova\git\HikAlfa1\src\pages\newitem\newitem.html"*/'<!--\n\n  Generated template for the NewitemPage page.\n\n\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n\n  Ionic pages and navigation.\n\n-->\n\n<ion-header>\n\n\n\n    <ion-navbar>\n\n        <ion-title>{{this.titleText}}</ion-title>\n\n        <ion-buttons end>\n\n            <a style="font-size:12pt" (click)="actionButtonClicked()">{{this.actionButtonText}}</a>\n\n		</ion-buttons>\n\n    </ion-navbar>\n\n</ion-header>\n\n\n\n\n\n<ion-content padding>\n\n    <ion-item-divider><h1>In the category : {{this.category.name}}</h1></ion-item-divider>\n\n    \n\n    <ion-item>\n\n		<ion-label color="primary" stacked>Name</ion-label>\n\n		<ion-input type="text" [(ngModel)]="this.item.name"></ion-input>\n\n	</ion-item>\n\n    <!--<ion-item>\n\n		<ion-label color="primary" stacked>Type</ion-label>\n\n		<ion-input type="text" [(ngModel)]="this.item.type"></ion-input>\n\n	</ion-item>-->\n\n    <ion-item>\n\n		<ion-label color="primary" stacked>Description</ion-label>\n\n		<ion-input type="text" [(ngModel)]="this.item.description"></ion-input>\n\n	</ion-item>\n\n    <ion-item>\n\n        <ion-label color="primary" stacked>Weight (gr)</ion-label>\n\n        <ion-input type="number" [(ngModel)]="this.weight"></ion-input>\n\n    </ion-item>\n\n	\n\n	<ion-segment [(ngModel)]="this.item.weightType" color="primary">\n\n		<ion-segment-button value="worn">\n\n			Worn\n\n		</ion-segment-button>\n\n		<ion-segment-button value="base">\n\n			Base\n\n		</ion-segment-button>\n\n		<ion-segment-button value="consumable">\n\n			Consumable\n\n		</ion-segment-button>\n\n	</ion-segment>\n\n	\n\n	<ion-item>\n\n		<ion-label color="primary" stacked>Note</ion-label>\n\n		<ion-textarea [(ngModel)]="this.item.note"></ion-textarea>\n\n	</ion-item>\n\n	\n\n	<br />\n\n	<br />\n\n	\n\n    \n\n    <button ion-button block outline (click)="actionButtonClicked()">{{this.actionButtonText}}</button>\n\n	\n\n\n\n	<br />\n\n	<button ion-button *ngIf="this.operation == \'edit\'" block color="danger" (click)="removeItem(this.item)">Delete item</button>\n\n    \n\n</ion-content>\n\n'/*ion-inline-end:"c:\Users\anton.ryhlov\cordova\git\HikAlfa1\src\pages\newitem\newitem.html"*/,
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__providers_data_data__["a" /* DataProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_data_data__["a" /* DataProvider */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__providers_invent_invent__["b" /* InventProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__providers_invent_invent__["b" /* InventProvider */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* App */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* App */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]) === "function" && _f || Object])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__providers_data_data__["a" /* DataProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_data_data__["a" /* DataProvider */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__providers_invent_invent__["b" /* InventProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__providers_invent_invent__["b" /* InventProvider */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* App */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* App */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* ToastController */]) === "function" && _g || Object])
     ], NewitemPage);
     return NewitemPage;
-    var _a, _b, _c, _d, _e, _f;
+    var _a, _b, _c, _d, _e, _f, _g;
 }());
 
 //# sourceMappingURL=newitem.js.map

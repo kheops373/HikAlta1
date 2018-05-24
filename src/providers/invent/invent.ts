@@ -25,24 +25,20 @@ export class Category {
 
 export class InventoryItem {
 
-    public id: number;
+    public id: number = 0;
     public inventory: string;
     public category: number;
     public name: string;
     public description: string;
-    public brand: string;
-    public model: string;
+	public note: string;
     public weight: number;
     public quantity: number;
     public type: string;
-	public weightType: string;
+	public weightType: string = 'base';
 
-    constructor(id, name, inventory, category) {
-        this.id = id;
-        this.name = name;
-        this.inventory = inventory;
-        this.category = category;
+    constructor() {
     }
+
 }
 
 
@@ -56,6 +52,9 @@ export class BackPack {
 	public inventory: string;
 	public items: number[] = [];
     public totalWeight: number = 0;
+	public wornWeight: number = 0;
+	public baseWeight: number = 0;
+	public consumableWeight: number = 0;
 
 }
 
@@ -212,6 +211,13 @@ export class InventProvider {
         
         return res;
     }
+	getItemById(itemId) {
+		for(var i = this.items.length - 1; i >= 0; i--) {
+            if(this.items[i].id == itemId) {
+               return this.items[i];
+            }
+        }
+	}
     removeItemById(itemId) {
         for(var i = this.items.length - 1; i >= 0; i--) {
             if(this.items[i].id == itemId) {
@@ -219,14 +225,6 @@ export class InventProvider {
             }
         }
         this.storage.set('items', this.items);
-    }
-    createItem(name, description, category) {
-        let item = new InventoryItem(this.settings.lastItemId, name, this.settings.selectedInventory, category);
-        this.settings.lastItemId++;
-        item.description = description;
-        this.items.push(item);
-        this.storage.set('items', this.items);
-        this.storage.set('settings', this.settings);
     }
     createItemByItem(item) {
         item.id = this.settings.lastItemId;
@@ -247,6 +245,20 @@ export class InventProvider {
         }
         return n;
     }
+
+
+	cloneItem(itemo, item) {
+		item.id = itemo.id;
+		item.inventory = itemo.inventory;
+		item.category = itemo.category;
+		item.name = itemo.name;
+		item.description = itemo.description;
+		item.note = itemo.note;
+		item.weight = itemo.weight;
+		item.quantity = itemo.quantity;
+		item.type = itemo.type;
+		item.weightType = itemo.weightType;
+	}
 
 
 
@@ -303,6 +315,34 @@ export class InventProvider {
 		return null;
 	}
 
+	getItemsFromBackpack(backpack) {
+		let items: InventoryItem[] = [];
+		for(var i = backpack.items.length - 1; i >= 0; i--) {
+            items.push(this.getItemById(backpack.items[i]));
+        }
+		return items;
+	}
+
+	getItemsFromSelectedBackpack() {
+		let backpack = this.getSelectedBackpack();
+		let items: InventoryItem[] = [];
+		for(var i = backpack.items.length - 1; i >= 0; i--) {
+            items.push(this.getItemById(backpack.items[i]));
+        }
+		return items;
+	}
+
+	getItemsByCategoryFromSelectedBackpack(category) {
+		let backpack = this.getSelectedBackpack();
+		let items: InventoryItem[] = [];
+		for(var i = backpack.items.length - 1; i >= 0; i--) {
+			let item = this.getItemById(backpack.items[i]);
+			if( item.category == category.id )
+            	items.push(this.getItemById(backpack.items[i]));
+        }
+		return items;
+	}
+
 	addItemToBackpack(item, backpack) {
 		backpack.items.push(item.id);
         backpack.totalWeight += item.weight;
@@ -322,7 +362,7 @@ export class InventProvider {
 	itemIsInBackpack(item, backpack) {
 		for(var i = backpack.items.length - 1; i >= 0; i--) {
             if(backpack.items[i] == item.id) {
-               return { 'color': 'green', 'icon': 'remove', 'action':'remove', background: '#EEE' };
+               return { 'color': 'green', 'icon': 'remove', 'action':'remove', background: '#DDFFFF' };
             }
         }
 		return { 'color': 'gray', 'icon': 'add', 'action':'add', background: '' };
@@ -355,6 +395,27 @@ export class InventProvider {
                backpack.totalWeight += this.items[i].weight;
             }
         }
+    }
+
+    calculateBackpackWeights() {
+		let backpack = this.getSelectedBackpack();
+        backpack.totalWeight = 0;
+		backpack.wornWeight = 0;
+		backpack.baseWeight = 0;
+		backpack.consumableWeight = 0;
+		for(var i = this.items.length - 1; i >= 0; i--) {
+            if( this.items[i].inventory == this.settings.selectedInventory && this.boolItemIsInBackpack(this.items[i], backpack) ) {
+               backpack.totalWeight += this.items[i].weight;
+				if(this.items[i].weightType == "worn") {
+					backpack.wornWeight += this.items[i].weight;
+				} else if(this.items[i].weightType == "base") {
+					backpack.baseWeight += this.items[i].weight;
+				} else if(this.items[i].weightType == "consumable") {
+					backpack.consumableWeight += this.items[i].weight;
+				}
+            }
+        }
+		return true;
     }
 
 	totalBackpackWeight(backpack) {

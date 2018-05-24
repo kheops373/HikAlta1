@@ -46,10 +46,19 @@
 			Consumable
 		</ion-segment-button>
 	</ion-segment>
-    
-    <!--<button ion-button outline (click)="actionButtonClicked()">{{this.actionButtonText}}</button>-->
+	
+	<ion-item>
+		<ion-label color="primary" stacked>Note</ion-label>
+		<ion-textarea [(ngModel)]="this.item.note"></ion-textarea>
+	</ion-item>
 	
 	<br />
+	<br />
+	
+    
+    <button ion-button block outline (click)="actionButtonClicked()">{{this.actionButtonText}}</button>
+	
+
 	<br />
 	<button ion-button *ngIf="this.operation == 'edit'" block color="danger" (click)="removeItem(this.item)">Delete item</button>
     

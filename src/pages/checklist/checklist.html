@@ -1,0 +1,53 @@
+<!--
+  Generated template for the ChecklistPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Checklist</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+	
+	<ng-container *ngIf="this.invent.getSelectedBackpack() as backpack">
+
+		<ion-list *ngFor="let cat of this.invent.getCategories()">
+
+				<ion-list-header style="font-weight: bold; font-size: 11pt; ">
+					<ion-icon item-start small [name]="cat.show ? 'arrow-dropdown' : 'arrow-dropright'" (click)="cat.show = cat.show ? false : true"></ion-icon>
+					{{cat.name}} ({{this.invent.countBackpackItemsByCategory(backpack, cat)}}/{{this.invent.countItemsByCategory(cat)}})
+				</ion-list-header>
+
+
+				<ng-container *ngIf="cat.show">
+					<ng-container *ngFor="let item of this.invent.getItemsByCategoryFromSelectedBackpack(cat)">
+
+							<ion-item>
+								<ion-label color="green" >{{item.name}}</ion-label>
+								<ion-checkbox></ion-checkbox>
+
+								<!--<p>{{item.description}} - {{item.weight}} gr</p><ion-icon item-end  [name]="param.icon" color="primary" (click)="addRemoveItem(item, backpack, param.action)"></ion-icon>-->
+							</ion-item>
+
+					</ng-container>
+				</ng-container>
+
+
+		</ion-list>
+		
+	</ng-container>
+	
+	<ng-container *ngIf=" !this.invent.boolInventoryHasBackpacks()">
+		<h1>No backpacks created</h1>
+		<br />
+		<button ion-button block outline (click)="this.app.getRootNav().push('NewbackpackPage')">Create first backpack</button>
+	</ng-container>
+	
+	
+</ion-content>

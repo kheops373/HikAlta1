@@ -1,4 +1,4 @@
-webpackJsonp([8],{
+webpackJsonp([9],{
 
 /***/ 109:
 /***/ (function(module, exports) {
@@ -23,34 +23,38 @@ webpackEmptyAsyncContext.id = 109;
 var map = {
 	"../pages/backpack/backpack.module": [
 		274,
+		8
+	],
+	"../pages/checklist/checklist.module": [
+		275,
 		7
 	],
 	"../pages/inventory/inventory.module": [
-		275,
+		276,
 		6
 	],
 	"../pages/login/login.module": [
-		276,
+		277,
 		5
 	],
 	"../pages/newbackpack/newbackpack.module": [
-		277,
+		278,
 		4
 	],
 	"../pages/newitem/newitem.module": [
-		278,
+		279,
 		3
 	],
 	"../pages/newmenu/newmenu.module": [
-		279,
+		280,
 		2
 	],
 	"../pages/selectinvent/selectinvent.module": [
-		280,
+		281,
 		1
 	],
 	"../pages/tabs/tabs.module": [
-		281,
+		282,
 		0
 	]
 };
@@ -107,11 +111,9 @@ var Category = /** @class */ (function () {
 }());
 
 var InventoryItem = /** @class */ (function () {
-    function InventoryItem(id, name, inventory, category) {
-        this.id = id;
-        this.name = name;
-        this.inventory = inventory;
-        this.category = category;
+    function InventoryItem() {
+        this.id = 0;
+        this.weightType = 'base';
     }
     return InventoryItem;
 }());
@@ -120,6 +122,9 @@ var BackPack = /** @class */ (function () {
     function BackPack() {
         this.items = [];
         this.totalWeight = 0;
+        this.wornWeight = 0;
+        this.baseWeight = 0;
+        this.consumableWeight = 0;
     }
     return BackPack;
 }());
@@ -245,6 +250,13 @@ var InventProvider = /** @class */ (function () {
         //alert("Selected: "+this.settings.selectedInventory+ " cat: "+category.name);
         return res;
     };
+    InventProvider.prototype.getItemById = function (itemId) {
+        for (var i = this.items.length - 1; i >= 0; i--) {
+            if (this.items[i].id == itemId) {
+                return this.items[i];
+            }
+        }
+    };
     InventProvider.prototype.removeItemById = function (itemId) {
         for (var i = this.items.length - 1; i >= 0; i--) {
             if (this.items[i].id == itemId) {
@@ -252,14 +264,6 @@ var InventProvider = /** @class */ (function () {
             }
         }
         this.storage.set('items', this.items);
-    };
-    InventProvider.prototype.createItem = function (name, description, category) {
-        var item = new InventoryItem(this.settings.lastItemId, name, this.settings.selectedInventory, category);
-        this.settings.lastItemId++;
-        item.description = description;
-        this.items.push(item);
-        this.storage.set('items', this.items);
-        this.storage.set('settings', this.settings);
     };
     InventProvider.prototype.createItemByItem = function (item) {
         item.id = this.settings.lastItemId;
@@ -277,6 +281,18 @@ var InventProvider = /** @class */ (function () {
             }
         }
         return n;
+    };
+    InventProvider.prototype.cloneItem = function (itemo, item) {
+        item.id = itemo.id;
+        item.inventory = itemo.inventory;
+        item.category = itemo.category;
+        item.name = itemo.name;
+        item.description = itemo.description;
+        item.note = itemo.note;
+        item.weight = itemo.weight;
+        item.quantity = itemo.quantity;
+        item.type = itemo.type;
+        item.weightType = itemo.weightType;
     };
     /***                        B A C K P A C K                     ***/
     InventProvider.prototype.createBackpack = function (backpack) {
@@ -326,6 +342,31 @@ var InventProvider = /** @class */ (function () {
         }
         return null;
     };
+    InventProvider.prototype.getItemsFromBackpack = function (backpack) {
+        var items = [];
+        for (var i = backpack.items.length - 1; i >= 0; i--) {
+            items.push(this.getItemById(backpack.items[i]));
+        }
+        return items;
+    };
+    InventProvider.prototype.getItemsFromSelectedBackpack = function () {
+        var backpack = this.getSelectedBackpack();
+        var items = [];
+        for (var i = backpack.items.length - 1; i >= 0; i--) {
+            items.push(this.getItemById(backpack.items[i]));
+        }
+        return items;
+    };
+    InventProvider.prototype.getItemsByCategoryFromSelectedBackpack = function (category) {
+        var backpack = this.getSelectedBackpack();
+        var items = [];
+        for (var i = backpack.items.length - 1; i >= 0; i--) {
+            var item = this.getItemById(backpack.items[i]);
+            if (item.category == category.id)
+                items.push(this.getItemById(backpack.items[i]));
+        }
+        return items;
+    };
     InventProvider.prototype.addItemToBackpack = function (item, backpack) {
         backpack.items.push(item.id);
         backpack.totalWeight += item.weight;
@@ -344,7 +385,7 @@ var InventProvider = /** @class */ (function () {
     InventProvider.prototype.itemIsInBackpack = function (item, backpack) {
         for (var i = backpack.items.length - 1; i >= 0; i--) {
             if (backpack.items[i] == item.id) {
-                return { 'color': 'green', 'icon': 'remove', 'action': 'remove', background: '#EEE' };
+                return { 'color': 'green', 'icon': 'remove', 'action': 'remove', background: '#DDFFFF' };
             }
         }
         return { 'color': 'gray', 'icon': 'add', 'action': 'add', background: '' };
@@ -374,6 +415,28 @@ var InventProvider = /** @class */ (function () {
                 backpack.totalWeight += this.items[i].weight;
             }
         }
+    };
+    InventProvider.prototype.calculateBackpackWeights = function () {
+        var backpack = this.getSelectedBackpack();
+        backpack.totalWeight = 0;
+        backpack.wornWeight = 0;
+        backpack.baseWeight = 0;
+        backpack.consumableWeight = 0;
+        for (var i = this.items.length - 1; i >= 0; i--) {
+            if (this.items[i].inventory == this.settings.selectedInventory && this.boolItemIsInBackpack(this.items[i], backpack)) {
+                backpack.totalWeight += this.items[i].weight;
+                if (this.items[i].weightType == "worn") {
+                    backpack.wornWeight += this.items[i].weight;
+                }
+                else if (this.items[i].weightType == "base") {
+                    backpack.baseWeight += this.items[i].weight;
+                }
+                else if (this.items[i].weightType == "consumable") {
+                    backpack.consumableWeight += this.items[i].weight;
+                }
+            }
+        }
+        return true;
     };
     InventProvider.prototype.totalBackpackWeight = function (backpack) {
         var weight = 0;
@@ -512,6 +575,7 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["e" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* MyApp */], {}, {
                     links: [
                         { loadChildren: '../pages/backpack/backpack.module#BackpackPageModule', name: 'BackpackPage', segment: 'backpack', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/checklist/checklist.module#ChecklistPageModule', name: 'ChecklistPage', segment: 'checklist', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/inventory/inventory.module#InventoryPageModule', name: 'InventoryPage', segment: 'inventory', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/newbackpack/newbackpack.module#NewbackpackPageModule', name: 'NewbackpackPage', segment: 'newbackpack', priority: 'low', defaultHistory: [] },
