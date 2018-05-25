@@ -17,7 +17,11 @@
     
 	<ion-list>
 		<ion-list-header>Inventory</ion-list-header>
-		<button ion-item detail-none (click)="selectInventory()">Select Inventory</button>
+		<button ion-item (click)="selectInventory()">Select Inventory</button>
+		<ion-item>
+			<ion-label>Use weights</ion-label>
+			<ion-toggle [(ngModel)]="this.invent.getSelectedInventorySettings().useWeights"></ion-toggle>
+		</ion-item>
 	</ion-list>
 	
 	

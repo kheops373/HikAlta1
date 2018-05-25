@@ -31,7 +31,7 @@
 	</ion-item>
     <ion-item>
 		<ion-label color="primary" stacked>Note</ion-label>
-		<ion-input type="text" [(ngModel)]="this.backpack.note"></ion-input>
+		<ion-textarea type="text" [(ngModel)]="this.backpack.note"></ion-textarea>
 	</ion-item>
 	
 	<button ion-button outline block (click)="createSaveBackpackClicked()">{{this.text.button}}</button>

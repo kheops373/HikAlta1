@@ -42,9 +42,6 @@ export class InventoryItem {
 }
 
 
-
-
-
 export class BackPack {
 	public id:number;
 	public name:string;
@@ -71,6 +68,16 @@ export class Settings {
 }
 
 
+export class InventorySettings {
+	public name: string;
+	public useWeights: boolean = true;
+
+	constructor(name: string) {
+		this.name = name;
+	}
+}
+
+
 
 
 
@@ -78,6 +85,7 @@ export class Settings {
 export class InventProvider {
 
     inventories : string[] = ["Hiking", "Travel"];
+	inventorySettings: InventorySettings[] = [];
     settings : Settings = new Settings();
     categories : Category[] = [ {'id':0, 'name':'Clothes', 'description':'...', 'show': true},
                                 {'id':1, 'name':'Shelter', 'description':'...', 'show': true},
@@ -114,6 +122,17 @@ export class InventProvider {
             };
           });
 	  
+	  storage.get('inventorysettings').then((storedItems) => {
+            if(storedItems){
+                this.inventorySettings = storedItems;
+            } else {
+				this.inventories.forEach( function(element) {
+					this.inventorySettings.push( new InventorySettings(element) );
+				}, this);
+				storage.set('inventorysettings', this.inventorySettings);
+			}
+          });
+	  
 	  storage.get('backpacks').then((storedItems) => {
             if( storedItems){
                 this.backpacks = storedItems;
@@ -129,6 +148,7 @@ export class InventProvider {
         this.storage.set('categories', this.categories);
         this.storage.set('items', this.items);
         this.storage.set('inventories', this.inventories);
+		this.storage.set('inventorysettings', this.inventorySettings);
         this.storage.set('settings', this.settings);
 		this.storage.set('backpacks', this.backpacks);
     }
@@ -136,6 +156,12 @@ export class InventProvider {
     saveItems() {
         this.storage.set('items', this.items);
     }
+
+	saveSettings() {
+		this.storage.set('inventories', this.inventories);
+		this.storage.set('inventorysettings', this.inventorySettings);
+		this.storage.set('settings', this.settings);
+	}
 
     eraseAllStorage() {
         this.items = [];
@@ -145,6 +171,11 @@ export class InventProvider {
         this.storage.set('settings', this.settings);
         this.inventories = ["Hiking", "Travel"]
         this.storage.set('inventories', this.inventories);
+		this.inventorySettings = []
+		this.inventories.forEach( function(element) {
+			this.inventorySettings.push( new InventorySettings(element) );
+		}, this);
+		this.storage.set('inventorysettings', this.inventorySettings);
     }
 
 
@@ -163,6 +194,12 @@ export class InventProvider {
         this.settings.selectedInventory = name;
         this.storage.set('settings', this.settings);
     }
+	getSelectedInventorySettings() {
+		for(var i=0; i<this.inventorySettings.length; i++) {
+			if(this.inventorySettings[i].name == this.settings.selectedInventory)
+				return this.inventorySettings[i];
+		}
+	}
 
     
     /***                    C A T E G O R I E S                 ***/

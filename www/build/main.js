@@ -82,6 +82,7 @@ module.exports = webpackAsyncContext;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return InventoryItem; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BackPack; });
 /* unused harmony export Settings */
+/* unused harmony export InventorySettings */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return InventProvider; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ionic_storage__ = __webpack_require__(77);
@@ -140,11 +141,20 @@ var Settings = /** @class */ (function () {
     return Settings;
 }());
 
+var InventorySettings = /** @class */ (function () {
+    function InventorySettings(name) {
+        this.useWeights = true;
+        this.name = name;
+    }
+    return InventorySettings;
+}());
+
 var InventProvider = /** @class */ (function () {
     function InventProvider(storage) {
         var _this = this;
         this.storage = storage;
         this.inventories = ["Hiking", "Travel"];
+        this.inventorySettings = [];
         this.settings = new Settings();
         this.categories = [{ 'id': 0, 'name': 'Clothes', 'description': '...', 'show': true },
             { 'id': 1, 'name': 'Shelter', 'description': '...', 'show': true },
@@ -176,6 +186,17 @@ var InventProvider = /** @class */ (function () {
             }
             ;
         });
+        storage.get('inventorysettings').then(function (storedItems) {
+            if (storedItems) {
+                _this.inventorySettings = storedItems;
+            }
+            else {
+                _this.inventories.forEach(function (element) {
+                    this.inventorySettings.push(new InventorySettings(element));
+                }, _this);
+                storage.set('inventorysettings', _this.inventorySettings);
+            }
+        });
         storage.get('backpacks').then(function (storedItems) {
             if (storedItems) {
                 _this.backpacks = storedItems;
@@ -187,11 +208,17 @@ var InventProvider = /** @class */ (function () {
         this.storage.set('categories', this.categories);
         this.storage.set('items', this.items);
         this.storage.set('inventories', this.inventories);
+        this.storage.set('inventorysettings', this.inventorySettings);
         this.storage.set('settings', this.settings);
         this.storage.set('backpacks', this.backpacks);
     };
     InventProvider.prototype.saveItems = function () {
         this.storage.set('items', this.items);
+    };
+    InventProvider.prototype.saveSettings = function () {
+        this.storage.set('inventories', this.inventories);
+        this.storage.set('inventorysettings', this.inventorySettings);
+        this.storage.set('settings', this.settings);
     };
     InventProvider.prototype.eraseAllStorage = function () {
         this.items = [];
@@ -201,6 +228,11 @@ var InventProvider = /** @class */ (function () {
         this.storage.set('settings', this.settings);
         this.inventories = ["Hiking", "Travel"];
         this.storage.set('inventories', this.inventories);
+        this.inventorySettings = [];
+        this.inventories.forEach(function (element) {
+            this.inventorySettings.push(new InventorySettings(element));
+        }, this);
+        this.storage.set('inventorysettings', this.inventorySettings);
     };
     /***                   I N V E N T O R I E S                  ***/
     InventProvider.prototype.getInventories = function () {
@@ -213,6 +245,12 @@ var InventProvider = /** @class */ (function () {
     InventProvider.prototype.selectInventory = function (name) {
         this.settings.selectedInventory = name;
         this.storage.set('settings', this.settings);
+    };
+    InventProvider.prototype.getSelectedInventorySettings = function () {
+        for (var i = 0; i < this.inventorySettings.length; i++) {
+            if (this.inventorySettings[i].name == this.settings.selectedInventory)
+                return this.inventorySettings[i];
+        }
     };
     /***                    C A T E G O R I E S                 ***/
     InventProvider.prototype.getCategories = function () {
@@ -470,10 +508,9 @@ var InventProvider = /** @class */ (function () {
     };
     InventProvider = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__ionic_storage__["b" /* Storage */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__ionic_storage__["b" /* Storage */]) === "function" && _a || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__ionic_storage__["b" /* Storage */]])
     ], InventProvider);
     return InventProvider;
-    var _a;
 }());
 
 //# sourceMappingURL=invent.js.map

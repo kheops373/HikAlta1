@@ -30,12 +30,12 @@
 		<ion-label color="primary" stacked>Description</ion-label>
 		<ion-input type="text" [(ngModel)]="this.item.description"></ion-input>
 	</ion-item>
-    <ion-item>
+    <ion-item *ngIf="this.invent.getSelectedInventorySettings().useWeights">
         <ion-label color="primary" stacked>Weight (gr)</ion-label>
         <ion-input type="number" [(ngModel)]="this.weight"></ion-input>
     </ion-item>
 	
-	<ion-segment [(ngModel)]="this.item.weightType" color="primary">
+	<ion-segment [(ngModel)]="this.item.weightType" color="primary" *ngIf="this.invent.getSelectedInventorySettings().useWeights">
 		<ion-segment-button value="worn">
 			Worn
 		</ion-segment-button>

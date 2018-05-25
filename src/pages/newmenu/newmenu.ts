@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
-import { InventProvider } from '../../providers/invent/invent';
+import { InventProvider, InventorySettings } from '../../providers/invent/invent';
 
 /**
  * Generated class for the NewmenuPage page.
@@ -52,5 +52,9 @@ export class NewmenuPage {
         
         
     }
+	
+	ionViewWillLeave() {
+		this.invent.saveSettings();
+	}
 
 }
