@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 
+import { AngularFireDatabase } from 'angularfire2/database';
+import { Observable } from 'rxjs';
+
 /*
   Generated class for the InventProvider provider.
 
@@ -13,12 +16,10 @@ export class Category {
     
     public id: number;
     public name: string;
-    public description: string;
+    //public description: string;
     public show: boolean;
 
-    constructor(name, description) {
-        this.name = name;
-        this.description = description;
+    constructor() {
     }    
 }
 
@@ -87,16 +88,30 @@ export class InventProvider {
     inventories : string[] = ["Hiking", "Travel"];
 	inventorySettings: InventorySettings[] = [];
     settings : Settings = new Settings();
-    categories : Category[] = [ {'id':0, 'name':'Clothes', 'description':'...', 'show': true},
+    /*categories : Category[] = [ {'id':0, 'name':'Clothes', 'description':'...', 'show': true},
                                 {'id':1, 'name':'Shelter', 'description':'...', 'show': true},
                                 {'id':2, 'name':'Sleeping system', 'description':'...', 'show': true},
                                 {'id':3, 'name':'Cookware', 'description':'...', 'show': true},
-                                {'id':4, 'name':'Tools', 'description':'...', 'show': true} ];
+                                {'id':4, 'name':'Tools', 'description':'...', 'show': true} ];*/
+	
+	cats : Observable<any[]>;
+	its : Observable<any[]>;
+	categories: Category[] = [];
+	
     items : InventoryItem[] = [];
 	backpacks : BackPack[] = [];
 
     
-  constructor(private storage: Storage) { 
+  constructor(private storage: Storage, afDB: AngularFireDatabase) {
+	  
+	  this.cats = afDB.list('/Categories').valueChanges(); ////////////////////////////////////////
+	  this.its = afDB.list('/items');
+	  
+	  /*   npm install rxjs@6 rxjs-compat@6 --save   */ 
+
+	  this.cats.subscribe( (elt) => { this.categories = elt } );
+	  
+	  
       
       storage.get('settings').then((storedItems) => {
             if( storedItems){
@@ -113,8 +128,12 @@ export class InventProvider {
       storage.get('items').then((storedItems) => {
             if( storedItems){
                 this.items = storedItems;
+				//this.its.remove(); ////////////////////////////////////
+				//this.its.push( this.items[0] ); ///////////////////////////////
             };
           });
+	  
+	  this.its.push( {'name':'test', 'id':3} );
       
       storage.get('inventories').then((storedItems) => {
             if( storedItems){
@@ -208,11 +227,11 @@ export class InventProvider {
         return this.categories;
     }
 
-    createCategory(cat) {
+    /*createCategory(cat) {
         cat.id = this.settings.lastCatId;
         this.settings.lastCatId ++;
         this.categories.push(cat);
-    }
+    }*/
 
     getCategoryNameById(catId) {
         for(var i = this.categories.length - 1; i >= 0; i--) {

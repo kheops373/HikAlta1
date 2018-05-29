@@ -53,7 +53,7 @@
 		
 		
 		
-		<ion-list *ngFor="let cat of this.invent.getCategories()">
+		<ion-list *ngFor="let cat of this.invent.getCategories()">	
 
 			<ion-list-header style="font-weight: bold; font-size: 11pt">
 				<ion-icon item-start small [name]="cat.show ? 'arrow-dropdown' : 'arrow-dropright'" (click)="cat.show = cat.show ? false : true"></ion-icon>
@@ -63,7 +63,7 @@
 					 - {{this.invent.calculateBackpackWeightByCateogry(backpack, cat)}} gr
 				</ng-container>
 				
-				<button ion-button item-end small round outline (click)="newItemToCategory(cat)"><ion-icon name="add"></ion-icon></button>
+				<button ion-button item-end small clear (click)="newItemToCategory(cat)"><ion-icon name="add"></ion-icon></button>
 			</ion-list-header>
 
 
