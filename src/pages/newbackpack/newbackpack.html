@@ -7,7 +7,10 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{this.text.title}}</ion-title>
+	<ion-buttons start>
+		<button ion-button (click)="this.viewCtrl.dismiss()">Cancel</button>
+	</ion-buttons>
+	<ion-title>{{this.text.title}}</ion-title>
   </ion-navbar>
 
 </ion-header>

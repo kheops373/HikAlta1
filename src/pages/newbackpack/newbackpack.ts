@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, App } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, App, ViewController } from 'ionic-angular';
 import { InventProvider, InventoryItem, BackPack } from '../../providers/invent/invent';
 
 /**
@@ -27,7 +27,7 @@ export class NewbackpackPage {
 	public storedBackpack: BackPack;
 	public text: Pram = { 'title':'Select backpack', 'button':'Create', 'showlist':true, 'action':'create' };
 
-  constructor(public app: App, public navCtrl: NavController, public navParams: NavParams, public invent: InventProvider) {
+  constructor(public app: App, public navCtrl: NavController, public navParams: NavParams, public invent: InventProvider, public viewCtrl: ViewController) {
 	  this.backpack = new BackPack();
 	  this.storedBackpack = navParams.get('backpack');
 	  
@@ -50,13 +50,15 @@ export class NewbackpackPage {
 	createSaveBackpackClicked() {
 		if( this.text.action == 'create' ) {
 			this.invent.createBackpack(this.backpack);
-			this.app.getRootNav().pop();
+			//this.app.getRootNav().pop();
+			this.viewCtrl.dismiss();
 		}
 		else if( this.text.action == 'save' ) {
 			this.storedBackpack.name = this.backpack.name;
 			this.storedBackpack.note = this.backpack.note;
 			this.invent.saveBackpack(this.storedBackpack);
-			this.app.getRootNav().pop();
+			//this.app.getRootNav().pop();
+			this.viewCtrl.dismiss();
 		}
 	}
 
@@ -70,7 +72,8 @@ export class NewbackpackPage {
 
 	selectBackpack(backpack) {
 		this.invent.selectBackpack(backpack);
-		this.app.getRootNav().pop();
+		//this.app.getRootNav().pop();
+		this.viewCtrl.dismiss();
 	}
 
 }

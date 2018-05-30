@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, App } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, App, ItemSliding, ModalController } from 'ionic-angular';
 import { InventProvider, InventoryItem, BackPack } from '../../providers/invent/invent';
 
 /**
@@ -18,7 +18,7 @@ export class BackpackPage {
 	
 
 
-	constructor(public app: App, public navCtrl: NavController, public navParams: NavParams, public invent: InventProvider) {
+	constructor(public app: App, public navCtrl: NavController, public navParams: NavParams, public invent: InventProvider, public modalCtrl: ModalController) {
 
 	}
 	
@@ -26,16 +26,17 @@ export class BackpackPage {
         this.app.getRootNav().push('NewitemPage', { 'operation': 'create', 'category': category });
     }
   
-	itemTapped(item, category) {
+	itemPressed(item, category) {
         this.app.getRootNav().push('NewitemPage', { 'operation': 'edit', 'item': item, 'category': category } )
 	}
 	
-	addRemoveItem(item, backpack, action) {
+	addRemoveItem(item, backpack, action, slidingItem: ItemSliding) {
 		if( action == 'add' ) {
 			this.invent.addItemToBackpack(item, backpack);
 		} else if( action == 'remove' ) {
 			this.invent.removeItemFromBackpack(item, backpack);
 		}
+		slidingItem.close();
 	}
     
     /*ionViewWillEnter() {

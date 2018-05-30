@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 
-import { AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 import { Observable } from 'rxjs';
 
 /*
@@ -95,7 +95,7 @@ export class InventProvider {
                                 {'id':4, 'name':'Tools', 'description':'...', 'show': true} ];*/
 	
 	cats : Observable<any[]>;
-	its : Observable<any[]>;
+	its : AngularFireList<{}>;
 	categories: Category[] = [];
 	
     items : InventoryItem[] = [];
@@ -133,7 +133,7 @@ export class InventProvider {
             };
           });
 	  
-	  this.its.push( {'name':'test', 'id':3} );
+	  //this.its.push( {'name':'test', 'id':3} );
       
       storage.get('inventories').then((storedItems) => {
             if( storedItems){

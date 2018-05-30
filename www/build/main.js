@@ -182,7 +182,7 @@ var InventProvider = /** @class */ (function () {
             }
             ;
         });
-        this.its.push({ 'name': 'test', 'id': 3 });
+        //this.its.push( {'name':'test', 'id':3} );
         storage.get('inventories').then(function (storedItems) {
             if (storedItems) {
                 _this.inventories = storedItems;

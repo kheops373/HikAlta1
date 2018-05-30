@@ -7,12 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-	  <ion-title>Backpack</ion-title>
-	  <ion-buttons end>
-		  <button ion-button icon-only (click)="this.app.getRootNav().push('NewbackpackPage', {'backpack':null})">
-			  <ion-icon name="list"></ion-icon>
-		  </button>
-	  </ion-buttons>
+	  <ion-title (click)="this.modalCtrl.create('NewbackpackPage', {'backpack':null}).present()">Backpack       <ion-icon name="arrow-dropdown"></ion-icon></ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -71,16 +66,16 @@
 				<ng-container *ngFor="let item of this.invent.getItems(cat)" >
 					
 					
-					<ion-item-sliding *ngIf="this.invent.itemIsInBackpack(item, backpack) as param">
+					<ion-item-sliding *ngIf="this.invent.itemIsInBackpack(item, backpack) as param" #slidingItem>
 					
-						<ion-item [style.background-color]="param.background" (click)="itemTapped(item, cat)">
+						<ion-item [style.background-color]="param.background" (press)="itemPressed(item, cat)" (click)="addRemoveItem(item, backpack, param.action, slidingItem)">
 							<ion-grid item-content>
-								<ion-row style="padding:0; margin: 0">
-									<ion-col style="padding:0">
+								<ion-row style="padding-bottom:0; margin-bottom:0">
+									<ion-col style="padding-bottom:0">
 										<h3 [style.color]="param.color" style="font-weight:bold;" >{{item.name}}</h3>
 									</ion-col>
 								</ion-row>
-								<ion-row style="padding:0" *ngIf="this.invent.getSelectedInventorySettings().useWeights">
+								<ion-row style="padding-top:0; padding-bottom:0; margin-top: 0; margin-bottom:0" *ngIf="this.invent.getSelectedInventorySettings().useWeights">
 									<ion-col style="padding:0">
 										<ion-label stacked>Description</ion-label>{{item.description}}
 									</ion-col>
@@ -91,7 +86,8 @@
 							</ion-grid>
 						</ion-item>
 						
-						<ion-item-options side="left" (ionSwipe)="addRemoveItem(item, backpack, param.action)">
+						<ion-item-options side="left" (ionSwipe)="addRemoveItem(item, backpack, param.action, slidingItem)">
+							<button ion-button (click)="addRemoveItem(item, backpack, param.action, slidingItem)">Add/remove</button>
 						</ion-item-options>
 					</ion-item-sliding>
 					
