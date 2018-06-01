@@ -16,6 +16,7 @@ import { MyApp } from './app.component';
 import { LoginPage } from './../pages/login/login';
 import { DataProvider } from '../providers/data/data';
 import { InventProvider } from '../providers/invent/invent';
+import { AuthService } from '../providers/auth/auth';
 
 
 export const firebaseConfig = {
@@ -51,6 +52,7 @@ export const firebaseConfig = {
     InventProvider,
 	AngularFireDatabase,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
+    AuthService,
 
   ]
 })

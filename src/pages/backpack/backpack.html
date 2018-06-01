@@ -15,6 +15,9 @@
 
 <ion-content padding>
 	
+	<h1>{{this.auth.authenticated()?'YES':'NO!'}}</h1>
+	<h1>{{this.auth.getEmail()}} </h1>
+	
 	<ng-container  *ngIf="this.invent.boolInventoryHasBackpacks() && this.invent.calculateBackpackWeights() && this.invent.getSelectedBackpack() as backpack">
 	
 		

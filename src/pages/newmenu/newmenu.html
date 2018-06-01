@@ -14,6 +14,16 @@
 
 
 <ion-content padding>
+	
+	<ion-list>
+		<ion-item>
+			<ion-label>Signed in with  <span style="font-weight: bold">{{this.auth.getEmail()}}</span></ion-label>
+			
+		</ion-item>
+		<ion-item *ngIf="this.auth.authenticated()">
+			<button ion-button block (click)="logout()" outline>Logout</button>
+		</ion-item>
+	</ion-list>
     
 	<ion-list>
 		<ion-list-header>Inventory</ion-list-header>

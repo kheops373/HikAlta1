@@ -15,4 +15,23 @@
 
 <ion-content padding>
     <button ion-button full (click)="doLogin()">Login</button>
+	
+		
+	
+	<ion-list>
+		<ion-item>
+			<ion-input type="text" placeholder="Email"  [(ngModel)]="this.email"></ion-input>
+		</ion-item>
+		<ion-item>
+			<ion-input type="password" placeholder="Password" [(ngModel)]="this.password"></ion-input>
+		</ion-item>
+		<ion-item>
+			<button ion-button (click)="login()">Login</button>
+		</ion-item>
+		<ion-item>
+			<button ion-button (click)="signup()">Signup</button>
+		</ion-item>
+	</ion-list>
+	
+	
 </ion-content>

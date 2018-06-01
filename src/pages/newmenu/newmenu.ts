@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
 import { InventProvider, InventorySettings } from '../../providers/invent/invent';
+import { AuthService } from '../../providers/auth/auth';
 
 /**
  * Generated class for the NewmenuPage page.
@@ -16,7 +17,7 @@ import { InventProvider, InventorySettings } from '../../providers/invent/invent
 })
 export class NewmenuPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public invent: InventProvider, public alertCtrl: AlertController, public modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public invent: InventProvider, public alertCtrl: AlertController, public modalCtrl: ModalController, private auth: AuthService) {
   }
 	
 	
@@ -52,6 +53,11 @@ export class NewmenuPage {
         
         
     }
+	
+	logout() {
+		this.auth.signOut();
+		this.navCtrl.setRoot('LoginPage');
+	}
 	
 	ionViewWillLeave() {
 		this.invent.saveSettings();

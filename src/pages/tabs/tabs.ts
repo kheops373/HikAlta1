@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AuthService } from '../../providers/auth/auth';
 
 /**
  * Generated class for the TabsPage page.
@@ -21,8 +22,12 @@ export class TabsPage {
     myIndex: number;
 
 
-  constructor(public navParams: NavParams) {
-    this.myIndex = navParams.data.tabIndex || 0;
+  constructor(public navCtrl: NavController, public navParams: NavParams, private auth: AuthService) {
+	  if( !auth.authenticated() )
+		  navCtrl.setRoot('LoginPage');
+	  
+	  
+	  this.myIndex = navParams.data.tabIndex || 0;
   }
 
 

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, App, ItemSliding, ModalController } from 'ionic-angular';
 import { InventProvider, InventoryItem, BackPack } from '../../providers/invent/invent';
+import { AuthService } from '../../providers/auth/auth';
 
 /**
  * Generated class for the BackpackPage page.
@@ -18,7 +19,7 @@ export class BackpackPage {
 	
 
 
-	constructor(public app: App, public navCtrl: NavController, public navParams: NavParams, public invent: InventProvider, public modalCtrl: ModalController) {
+	constructor(public app: App, public navCtrl: NavController, public navParams: NavParams, public invent: InventProvider, public modalCtrl: ModalController, private auth: AuthService) {
 
 	}
 	
